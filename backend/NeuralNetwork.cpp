@@ -118,4 +118,7 @@ vector<double> NeuralNetwork::forward(
 
         output[i] = sum;
     }
+
+    return output;
+    
 }
