@@ -26,6 +26,10 @@ class NeuralNetwork
         double relu(double value);
         double reluDerivative(double value);
 
+        vector<double> forward(
+            const vector<double>& input
+        );
+
         vector<vector<double>> weightsInputHidden1;
         vector<double> biasHidden1;
 
