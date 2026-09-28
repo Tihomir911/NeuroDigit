@@ -1,0 +1,39 @@
+# Build
+build/
+cmake-build-*/
+bin/
+obj/
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# IDE
+.vscode/
+.idea/
+
+# Python / misc
+__pycache__/
+*.pyc
+
+# Neural network model
+*.bin
+*.model
+
+# Dataset
+data/mnist/
+
+# OS
+.DS_Store
+Thumbs.db
