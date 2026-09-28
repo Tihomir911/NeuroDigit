@@ -23,6 +23,9 @@ class NeuralNetwork
     
     private:
         
+        double relu(double value);
+        double reluDerivative(double value);
+
         vector<vector<double>> weightsInputHidden1;
         vector<double> biasHidden1;
 
