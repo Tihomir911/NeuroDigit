@@ -23,7 +23,7 @@ class NeuralNetwork
     
     private:
         
-        vector<vector<double>> weightMatrix;
+        vector<vector<double>> weightsInputHidden1;
         vector<double> biasHidden1;
 
         vector<vector<double>> weightsHidden1Hidden2;
