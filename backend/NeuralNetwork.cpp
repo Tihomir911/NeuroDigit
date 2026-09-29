@@ -73,6 +73,42 @@ double NeuralNetwork::reluDerivative(double value)
     return 0.0;
 }
 
+vector<double> NeuralNetwork::softmax(
+    const vector<double>& values
+)
+{
+    vector<double> probabilities(values.size());
+
+    double maxValue = values[0];
+
+    for (double value : values){
+        
+        if (value > maxValue){
+            
+            maxValue = value;
+
+        }
+    }
+
+    double sum = 0.0;
+
+    for (int i = 0; i < values.size(); i++){
+
+        probabilities[i] = exp(values[i] - maxValue);
+        sum += probabilities[i];
+
+    }
+
+    for (int i = 0; i < probabilities.size(); i++){
+
+        probabilities[i] /= sum;
+
+    }
+
+    return probabilities;
+    
+}
+
 vector<double> NeuralNetwork::forward(
     const vector<double>& input
 )
