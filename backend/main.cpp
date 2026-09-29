@@ -29,12 +29,18 @@ int main(){
 #include "Mnist.hpp"
 
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
+
 
 int main()
 {
     Mnist dataset;
+
+
+    cout << "Loading MNIST..." << endl;
+
 
     dataset.loadImages(
         "data/mnist/train-images-idx3-ubyte"
@@ -44,6 +50,7 @@ int main()
         "data/mnist/train-labels-idx1-ubyte"
     );
 
+
     cout << "Images: "
          << dataset.images.size()
          << endl;
@@ -52,18 +59,47 @@ int main()
          << dataset.labels.size()
          << endl;
 
-    cout << "First label: "
-         << dataset.labels[0]
-         << endl;
 
-    cout << "First image pixels:" << endl;
+    NeuralNetwork network;
 
-    for (int i = 0; i < 20; i++)
-    {
-        cout << dataset.images[0][i] << " ";
-    }
+
+    const double learningRate = 0.01;
+
 
     cout << endl;
+    cout << "Starting training..." << endl;
+    cout << endl;
+
+
+    for (int i = 0; i < 60000; i++)
+    {
+        network.train(
+            dataset.images[i],
+            dataset.labels[i],
+            learningRate
+        );
+
+
+        if (i % 1000 == 0)
+        {
+            cout << "Training: "
+                 << i
+                 << " / 60000"
+                 << endl;
+        }
+    }
+
+
+    cout << endl;
+    cout << "Training finished!" << endl;
+
+
+    network.save("model.bin");
+
+
+    cout << "Model saved to model.bin"
+         << endl;
+
 
     return 0;
 }
