@@ -1,4 +1,4 @@
-#include "NeuralNetwork.hpp"
+/*#include "NeuralNetwork.hpp"
 
 #include <iostream>
 #include <vector>
@@ -23,4 +23,48 @@ int main(){
 
     return 0;
 
+} */
+
+
+#include "NeuralNetwork.hpp"
+#include "Mnist.hpp"
+
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    Mnist dataset;
+
+    dataset.loadImages(
+        "data/mnist/train-images.idx3-ubyte"
+    );
+
+    dataset.loadLabels(
+        "data/mnist/train-labels.idx1-ubyte"
+    );
+
+    cout << "Images: "
+         << dataset.images.size()
+         << endl;
+
+    cout << "Labels: "
+         << dataset.labels.size()
+         << endl;
+
+    cout << "First label: "
+         << dataset.labels[0]
+         << endl;
+
+    cout << "First image pixels:" << endl;
+
+    for (int i = 0; i < 20; i++)
+    {
+        cout << dataset.images[0][i] << " ";
+    }
+
+    cout << endl;
+
+    return 0;
 }
