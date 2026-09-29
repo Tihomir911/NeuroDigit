@@ -1,6 +1,9 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -10,37 +13,79 @@
 
     <title>NeuroDigit</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
-    <!-- Animated space background -->
+    <!-- =========================================
+         DYNAMIC SPACE BACKGROUND
+         ========================================= -->
+
     <canvas id="spaceCanvas"></canvas>
 
-    <!-- Main application -->
+
+    <!-- =========================================
+         FEEDBACK OVERLAY
+         ========================================= -->
+
+    <div id="feedbackOverlay"></div>
+
+
+    <!-- =========================================
+         MAIN APPLICATION
+         ========================================= -->
+
     <main class="app">
 
+
+        <!-- =====================================
+             HEADER
+             ===================================== -->
+
         <header class="header">
+
             <div class="logo">
+
                 <span class="logo-bracket">[</span>
+
                 NEURO<span>DIGIT</span>
+
                 <span class="logo-bracket">]</span>
+
             </div>
 
+
             <div class="subtitle">
+
                 HANDWRITTEN DIGIT RECOGNITION
+
             </div>
+
         </header>
 
 
+        <!-- =====================================
+             DRAWING SECTION
+             ===================================== -->
+
         <section class="drawing-section">
 
+
             <div class="section-title">
+
                 DRAW A DIGIT
+
             </div>
 
+
             <div class="canvas-wrapper">
+
 
                 <canvas
                     id="drawingCanvas"
@@ -48,88 +93,163 @@
                     height="280"
                 ></canvas>
 
+
                 <div class="canvas-corner top-left"></div>
+
                 <div class="canvas-corner top-right"></div>
+
                 <div class="canvas-corner bottom-left"></div>
+
                 <div class="canvas-corner bottom-right"></div>
+
 
             </div>
 
 
             <div class="canvas-controls">
 
-                <button id="clearButton" class="secondary-button">
+
+                <button
+                    id="clearButton"
+                    class="secondary-button"
+                >
+
                     CLEAR
+
                 </button>
 
-                <button id="startButton" class="main-button">
+
+                <button
+                    id="startButton"
+                    class="main-button"
+                >
+
                     <span>START</span>
+
                 </button>
+
 
             </div>
 
+
         </section>
 
+
+        <!-- =====================================
+             RESULT SECTION
+             ===================================== -->
 
         <section class="result-section">
 
+
             <div class="section-title">
+
                 NEURAL PREDICTION
+
             </div>
 
-            <div id="prediction" class="prediction">
+
+            <div
+                id="prediction"
+                class="prediction"
+            >
+
                 —
+
             </div>
 
-            <div id="confidence" class="confidence">
+
+            <div
+                id="confidence"
+                class="confidence"
+            >
+
                 Waiting for input...
+
             </div>
+
 
         </section>
 
+
+        <!-- =====================================
+             FEEDBACK SECTION
+             ===================================== -->
 
         <section
             id="feedbackSection"
             class="feedback-section hidden"
         >
 
+
             <div class="feedback-title">
+
                 WAS THE NETWORK CORRECT?
+
             </div>
 
+
             <div class="feedback-buttons">
+
 
                 <button
                     id="yesButton"
                     class="feedback-button"
                 >
-                    YES
+
+                    ✓ YES
+
                 </button>
+
 
                 <button
                     id="noButton"
                     class="feedback-button"
                 >
-                    NO
+
+                    ✕ NO
+
                 </button>
+
 
             </div>
 
+
         </section>
 
+
+        <!-- =====================================
+             NEURAL NETWORK VISUALIZATION
+             ===================================== -->
 
         <section class="network-section">
 
+
             <div class="section-title">
+
                 NEURAL NETWORK
+
             </div>
+
 
             <div class="network-visualization">
 
+
+                <!-- INPUT -->
+
                 <div class="network-layer input-layer">
-                    <div class="layer-title">INPUT</div>
+
+
+                    <div class="layer-title">
+
+                        INPUT
+
+                    </div>
+
 
                     <div class="neurons">
+
+
                         <span></span>
                         <span></span>
                         <span></span>
@@ -138,22 +258,51 @@
                         <span></span>
                         <span></span>
                         <span></span>
+
+
                     </div>
+
+
+                    <div class="layer-size">
+
+                        784
+
+                    </div>
+
+
                 </div>
 
+
+                <!-- CONNECTION -->
 
                 <div class="network-connections">
+
+
                     <span></span>
                     <span></span>
                     <span></span>
                     <span></span>
+                    <span></span>
+
+
                 </div>
 
+
+                <!-- HIDDEN 1 -->
 
                 <div class="network-layer hidden-layer">
-                    <div class="layer-title">HIDDEN</div>
+
+
+                    <div class="layer-title">
+
+                        HIDDEN 1
+
+                    </div>
+
 
                     <div class="neurons">
+
+
                         <span></span>
                         <span></span>
                         <span></span>
@@ -161,67 +310,147 @@
                         <span></span>
                         <span></span>
                         <span></span>
+
+
                     </div>
+
+
+                    <div class="layer-size">
+
+                        128
+
+                    </div>
+
+
                 </div>
 
+
+                <!-- CONNECTION -->
 
                 <div class="network-connections">
+
+
                     <span></span>
                     <span></span>
                     <span></span>
                     <span></span>
+                    <span></span>
+
+
                 </div>
 
+
+                <!-- HIDDEN 2 -->
 
                 <div class="network-layer hidden-layer">
-                    <div class="layer-title">HIDDEN</div>
+
+
+                    <div class="layer-title">
+
+                        HIDDEN 2
+
+                    </div>
+
 
                     <div class="neurons">
+
+
                         <span></span>
                         <span></span>
                         <span></span>
                         <span></span>
                         <span></span>
                         <span></span>
+                        <span></span>
+
+
                     </div>
+
+
+                    <div class="layer-size">
+
+                        64
+
+                    </div>
+
+
                 </div>
 
+
+                <!-- CONNECTION -->
 
                 <div class="network-connections">
+
+
                     <span></span>
                     <span></span>
                     <span></span>
                     <span></span>
+                    <span></span>
+
+
                 </div>
 
+
+                <!-- OUTPUT -->
 
                 <div class="network-layer output-layer">
-                    <div class="layer-title">OUTPUT</div>
+
+
+                    <div class="layer-title">
+
+                        OUTPUT
+
+                    </div>
+
 
                     <div class="output-neurons">
-                        <span>0</span>
-                        <span>1</span>
-                        <span>2</span>
-                        <span>3</span>
-                        <span>4</span>
-                        <span>5</span>
-                        <span>6</span>
-                        <span>7</span>
-                        <span>8</span>
-                        <span>9</span>
+
+
+                        <span data-digit="0">0</span>
+                        <span data-digit="1">1</span>
+                        <span data-digit="2">2</span>
+                        <span data-digit="3">3</span>
+                        <span data-digit="4">4</span>
+                        <span data-digit="5">5</span>
+                        <span data-digit="6">6</span>
+                        <span data-digit="7">7</span>
+                        <span data-digit="8">8</span>
+                        <span data-digit="9">9</span>
+
+
                     </div>
+
+
                 </div>
+
 
             </div>
 
+
+            <div
+                id="networkStatus"
+                class="network-status"
+            >
+
+                NETWORK IDLE
+
+            </div>
+
+
         </section>
+
 
     </main>
 
 
-    <div id="feedbackOverlay"></div>
+    <!-- =========================================
+         JAVASCRIPT
+         ========================================= -->
 
     <script src="app.js"></script>
 
 </body>
+
 </html>
+```
