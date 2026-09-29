@@ -113,6 +113,7 @@ void startServer(
 
     cout << "Server is running on:" << endl;
     cout << "http://localhost:8080" << endl;
+    cout << "ctrl + C ---> exit";
 
 
     server.listen(
