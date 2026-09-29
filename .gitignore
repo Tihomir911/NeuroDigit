@@ -12,6 +12,9 @@ obj/
 *.so
 *.a
 
+# Dataset
+data/mnist/
+
 # CMake
 CMakeFiles/
 CMakeCache.txt
@@ -26,13 +29,6 @@ compile_commands.json
 # Python / misc
 __pycache__/
 *.pyc
-
-# Neural network model
-*.bin
-*.model
-
-# Dataset
-data/mnist/
 
 # OS
 .DS_Store
