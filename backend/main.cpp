@@ -25,7 +25,6 @@ int main(){
 
 } */
 
-
 #include "NeuralNetwork.hpp"
 #include "Mnist.hpp"
 
@@ -38,11 +37,11 @@ int main()
     Mnist dataset;
 
     dataset.loadImages(
-        "data/mnist/train-images.idx3-ubyte"
+        "data/mnist/train-images-idx3-ubyte"
     );
 
     dataset.loadLabels(
-        "data/mnist/train-labels.idx1-ubyte"
+        "data/mnist/train-labels-idx1-ubyte"
     );
 
     cout << "Images: "
