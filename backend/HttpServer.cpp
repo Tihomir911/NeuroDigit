@@ -115,13 +115,18 @@ void startServer(
         cerr << "Failed to mount frontend directory" << endl;
     }
 
-    cout << "Server is running on:" << endl;
-    cout << "http://localhost:8080" << endl;
-    cout << "ctrl + C ---> exit";
-
-
-    server.listen(
-        "0.0.0.0",
-        8080
-    );
+    if (!server.set_mount_point("/", "./frontend"))
+{
+    cerr << "Failed to mount frontend directory" << endl;
+    return;
 }
+
+
+cout << "Server is running on:" << endl;
+cout << "http://localhost:8080" << endl;
+
+
+server.listen(
+    "0.0.0.0",
+    8080
+);
