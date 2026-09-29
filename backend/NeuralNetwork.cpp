@@ -158,3 +158,12 @@ vector<double> NeuralNetwork::forward(
     return output;
     
 }
+
+vector<double> NeuralNetwork::predict(
+    const vector<double>& input
+)
+{
+    vector<double> output = forward(input);
+
+    return softmax(output);
+}
