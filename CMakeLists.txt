@@ -5,9 +5,16 @@ project(NeuroDigit)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(httplib REQUIRED)
+
 add_executable(NeuroDigit
     backend/main.cpp
     backend/NeuralNetwork.cpp
     backend/Mnist.cpp
     backend/HttpServer.cpp
+)
+
+target_link_libraries(NeuroDigit
+    PRIVATE
+    httplib::httplib
 )
