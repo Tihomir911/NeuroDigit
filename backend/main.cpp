@@ -36,27 +36,45 @@ using namespace std;
 
 int main()
 {
-    Mnist dataset;
+    Mnist trainDataset;
+    Mnist testDataset;
 
 
     cout << "Loading MNIST..." << endl;
 
 
-    dataset.loadImages(
+    trainDataset.loadImages(
         "data/mnist/train-images-idx3-ubyte"
     );
 
-    dataset.loadLabels(
+    trainDataset.loadLabels(
         "data/mnist/train-labels-idx1-ubyte"
     );
 
 
-    cout << "Images: "
-         << dataset.images.size()
+    testDataset.loadImages(
+        "data/mnist/t10k-images-idx3-ubyte"
+    );
+
+    testDataset.loadLabels(
+        "data/mnist/t10k-labels-idx1-ubyte"
+    );
+
+
+    cout << "Training images: "
+         << trainDataset.images.size()
          << endl;
 
-    cout << "Labels: "
-         << dataset.labels.size()
+    cout << "Training labels: "
+         << trainDataset.labels.size()
+         << endl;
+
+    cout << "Test images: "
+         << testDataset.images.size()
+         << endl;
+
+    cout << "Test labels: "
+         << testDataset.labels.size()
          << endl;
 
 
@@ -74,8 +92,8 @@ int main()
     for (int i = 0; i < 60000; i++)
     {
         network.train(
-            dataset.images[i],
-            dataset.labels[i],
+            trainDataset.images[i],
+            trainDataset.labels[i],
             learningRate
         );
 
@@ -98,6 +116,74 @@ int main()
 
 
     cout << "Model saved to model.bin"
+         << endl;
+
+
+    cout << endl;
+    cout << "Testing model..." << endl;
+
+
+    int correct = 0;
+
+
+    for (int i = 0; i < 10000; i++)
+    {
+        vector<double> probabilities =
+            network.predict(
+                testDataset.images[i]
+            );
+
+
+        int prediction = 0;
+
+
+        for (int j = 1; j < 10; j++)
+        {
+            if (probabilities[j] >
+                probabilities[prediction])
+            {
+                prediction = j;
+            }
+        }
+
+
+        if (prediction ==
+            testDataset.labels[i])
+        {
+            correct++;
+        }
+
+
+        if (i % 1000 == 0)
+        {
+            cout << "Testing: "
+                 << i
+                 << " / 10000"
+                 << endl;
+        }
+    }
+
+
+    double accuracy =
+        static_cast<double>(correct)
+        / 10000.0
+        * 100.0;
+
+
+    cout << endl;
+
+    cout << "Correct: "
+         << correct
+         << " / 10000"
+         << endl;
+
+
+    cout << fixed
+         << setprecision(2);
+
+    cout << "Accuracy: "
+         << accuracy
+         << "%"
          << endl;
 
 
