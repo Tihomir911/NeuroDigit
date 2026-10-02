@@ -1,5 +1,7 @@
 #include "HttpServer.hpp"
 
+#include <filesystem>
+
 #include <httplib.h>
 #include <nlohmann/json.hpp>
 
@@ -110,17 +112,48 @@ void startServer(
         }
     );
 
-    if (!server.set_mount_point("/", "./frontend"))
+        string frontendPath;
+
+    if (filesystem::is_directory("./frontend"))
     {
-        cerr << "Failed to mount frontend directory" << endl;
+        frontendPath = "./frontend";
+
+        cout << "Frontend directory found: "
+             << frontendPath
+             << endl;
+    }
+    else if (filesystem::is_directory("./build/frontend"))
+    {
+        frontendPath = "./build/frontend";
+
+        cout << "Frontend directory found: "
+             << frontendPath
+             << endl;
+    }
+    else
+    {
+        cerr << "Failed to find frontend directory." << endl;
+        cerr << "Checked:" << endl;
+        cerr << "  ./frontend" << endl;
+        cerr << "  ./build/frontend" << endl;
+
         return;
     }
 
-cout << "Server is running on:" << endl;
-cout << "http://localhost:8080" << endl;
+    if (!server.set_mount_point("/", frontendPath))
+    {
+        cerr << "Failed to mount frontend directory: "
+             << frontendPath
+             << endl;
 
-server.listen(
-    "0.0.0.0",
-    8080
-);
+        return;
+    }
+
+    cout << "Server is running on:" << endl;
+    cout << "http://localhost:8080" << endl;
+
+    server.listen(
+        "0.0.0.0",
+        8080
+    );
 }
