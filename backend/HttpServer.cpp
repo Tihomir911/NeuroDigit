@@ -112,23 +112,19 @@ void startServer(
         }
     );
 
-        string frontendPath;
+    string frontendPath;
 
     if (filesystem::is_directory("./frontend"))
     {
         frontendPath = "./frontend";
-
-        cout << "Frontend directory found: "
-             << frontendPath
-             << endl;
     }
     else if (filesystem::is_directory("./build/frontend"))
     {
         frontendPath = "./build/frontend";
-
-        cout << "Frontend directory found: "
-             << frontendPath
-             << endl;
+    }
+    else if (filesystem::is_directory("../frontend"))
+    {
+        frontendPath = "../frontend";
     }
     else
     {
@@ -136,9 +132,16 @@ void startServer(
         cerr << "Checked:" << endl;
         cerr << "  ./frontend" << endl;
         cerr << "  ./build/frontend" << endl;
+        cerr << "  ../frontend" << endl;
 
         return;
     }
+
+
+    cout << "Frontend directory found: "
+         << frontendPath
+         << endl;
+
 
     if (!server.set_mount_point("/", frontendPath))
     {
