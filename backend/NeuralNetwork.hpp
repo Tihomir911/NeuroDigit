@@ -5,6 +5,15 @@
 
 using namespace std;
 
+struct PredictionTrace
+{
+    vector<double> input;
+    vector<double> hidden1;
+    vector<double> hidden2;
+    vector<double> logits;
+    vector<double> probabilities;
+};
+
 class NeuralNetwork
 {
 public:
