@@ -143,9 +143,6 @@ vector<double> NeuralNetwork::forward(
 {
     hidden1.resize(128);
 
-
-    // Input -> Hidden 1
-
     for (int i = 0; i < 128; i++)
     {
         double sum = biasHidden1[i];
@@ -161,9 +158,6 @@ vector<double> NeuralNetwork::forward(
 
         hidden1[i] = relu(sum);
     }
-
-
-    // Hidden 1 -> Hidden 2
 
     hidden2.resize(64);
 
@@ -183,9 +177,6 @@ vector<double> NeuralNetwork::forward(
 
         hidden2[i] = relu(sum);
     }
-
-
-    // Hidden 2 -> Output
 
     vector<double> output(10);
 
@@ -209,7 +200,6 @@ vector<double> NeuralNetwork::forward(
 
     return output;
 }
-
 
 vector<double> NeuralNetwork::predict(
     const vector<double>& input
@@ -252,15 +242,6 @@ void NeuralNetwork::train(
     vector<double> probabilities =
         softmax(output);
 
-
-    /*
-        Output layer
-
-        For Softmax + Cross Entropy:
-
-        gradient = probability - target
-    */
-
     vector<double> outputGradient(10);
 
 
@@ -273,12 +254,6 @@ void NeuralNetwork::train(
         outputGradient[i] =
             probabilities[i] - target;
     }
-
-
-    /*
-        Calculate gradient for
-        Hidden Layer 2
-    */
 
     vector<double> hidden2Gradient(64);
 
@@ -301,12 +276,6 @@ void NeuralNetwork::train(
             * reluDerivative(hidden2[j]);
     }
 
-
-    /*
-        Calculate gradient for
-        Hidden Layer 1
-    */
-
     vector<double> hidden1Gradient(128);
 
 
@@ -328,13 +297,6 @@ void NeuralNetwork::train(
             * reluDerivative(hidden1[j]);
     }
 
-
-    /*
-        Update:
-
-        Hidden 2 -> Output
-    */
-
     for (int i = 0; i < 10; i++)
     {
         for (int j = 0; j < 64; j++)
@@ -351,13 +313,6 @@ void NeuralNetwork::train(
             * outputGradient[i];
     }
 
-
-    /*
-        Update:
-
-        Hidden 1 -> Hidden 2
-    */
-
     for (int i = 0; i < 64; i++)
     {
         for (int j = 0; j < 128; j++)
@@ -373,13 +328,6 @@ void NeuralNetwork::train(
             learningRate
             * hidden2Gradient[i];
     }
-
-
-    /*
-        Update:
-
-        Input -> Hidden 1
-    */
 
     for (int i = 0; i < 128; i++)
     {
