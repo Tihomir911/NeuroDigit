@@ -45,7 +45,6 @@ void startServer(
                     return;
                 }
 
-
                 vector<double> pixels =
                     data["pixels"].get<vector<double>>();
 
@@ -61,7 +60,6 @@ void startServer(
 
                     return;
                 }
-
 
                 vector<double> probabilities =
                     network.predict(pixels);
@@ -137,11 +135,9 @@ void startServer(
         return;
     }
 
-
     cout << "Frontend directory found: "
          << frontendPath
          << endl;
-
 
     if (!server.set_mount_point("/", frontendPath))
     {
