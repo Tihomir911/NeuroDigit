@@ -220,6 +220,26 @@ vector<double> NeuralNetwork::predict(
     return softmax(output);
 }
 
+PredictionTrace NeuralNetwork::predictDetailed(
+    const vector<double>& input
+)
+{
+    PredictionTrace trace;
+
+    trace.input = input;
+
+    trace.logits = 
+        forward(
+            input,
+            trace.hidden1,
+            trace.hidden2
+        );
+
+    trace.probabilities = 
+        softmax(trace.logits);
+
+    return trace;
+}
 
 void NeuralNetwork::train(
     const vector<double>& input,
