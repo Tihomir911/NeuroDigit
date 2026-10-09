@@ -61,8 +61,13 @@ void startServer(
                     return;
                 }
 
-                vector<double> probabilities =
-                    network.predict(pixels);
+                
+                PredictionTrace trace =
+                    network.predictDetailed(pixels);
+
+
+                const vector<double>& probabilities =
+                    trace.probabilities;
 
 
                 int prediction = 0;
@@ -71,7 +76,7 @@ void startServer(
                 for (int i = 1; i < 10; i++)
                 {
                     if (probabilities[i] >
-                        probabilities[prediction])
+                    probabilities[prediction])
                     {
                         prediction = i;
                     }
@@ -87,6 +92,11 @@ void startServer(
                 result["prediction"] = prediction;
                 result["confidence"] = confidence;
 
+                result["input"] = trace.input;
+                result["hidden1"] = trace.hidden1;
+                result["hidden2"] = trace.hidden2;
+                result["logits"] = trace.logits;
+                result["output"] = trace.probabilities;
 
                 response.set_content(
                     result.dump(),
