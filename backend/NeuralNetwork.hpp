@@ -24,6 +24,10 @@ public:
         const vector<double>& input
     );
 
+    PredictionTrace predictDetailed(
+        const vector<double>& input
+    );
+
     void train(
         const vector<double>& input,
         int label,
