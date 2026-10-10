@@ -4,7 +4,6 @@
 // FRONTEND CONTROLLER
 // ============================================================
 
-
 // ============================================================
 // SPACE BACKGROUND
 // ============================================================
@@ -12,26 +11,21 @@
 const spaceCanvas =
     document.getElementById("spaceCanvas");
 
-
 const spaceContext =
     spaceCanvas.getContext("2d");
 
 
 const STAR_COUNT = 120;
 
-
 let stars = [];
-
 
 let mouseX = 0;
 
 let mouseY = 0;
 
-
 let targetMouseX = 0;
 
 let targetMouseY = 0;
-
 
 // ============================================================
 // RESIZE SPACE CANVAS
@@ -42,11 +36,9 @@ function resizeSpaceCanvas()
     spaceCanvas.width =
         window.innerWidth;
 
-
     spaceCanvas.height =
         window.innerHeight;
 }
-
 
 // ============================================================
 // CREATE STARS
@@ -55,7 +47,6 @@ function resizeSpaceCanvas()
 function createStars()
 {
     stars = [];
-
 
     for (
         let i = 0;
@@ -111,7 +102,6 @@ function createStars()
     }
 }
 
-
 // ============================================================
 // DRAW NEBULA
 // ============================================================
@@ -136,7 +126,6 @@ function drawNebula(
             radius
         );
 
-
     gradient.addColorStop(
         0,
         `rgba(
@@ -147,19 +136,15 @@ function drawNebula(
         )`
     );
 
-
     gradient.addColorStop(
         1,
         "rgba(0, 0, 0, 0)"
     );
 
-
     spaceContext.fillStyle =
         gradient;
 
-
     spaceContext.beginPath();
-
 
     spaceContext.arc(
         x,
@@ -169,10 +154,8 @@ function drawNebula(
         Math.PI * 2
     );
 
-
     spaceContext.fill();
 }
-
 
 // ============================================================
 // DRAW STARS
@@ -186,10 +169,8 @@ function drawStars(time)
         star.x +=
             star.speedX;
 
-
         star.y +=
             star.speedY;
-
 
         if (
             star.x < -5
@@ -199,7 +180,6 @@ function drawStars(time)
                 spaceCanvas.width + 5;
         }
 
-
         if (
             star.x >
             spaceCanvas.width + 5
@@ -207,7 +187,6 @@ function drawStars(time)
         {
             star.x = -5;
         }
-
 
         if (
             star.y < -5
@@ -217,7 +196,6 @@ function drawStars(time)
                 spaceCanvas.height + 5;
         }
 
-
         if (
             star.y >
             spaceCanvas.height + 5
@@ -226,7 +204,6 @@ function drawStars(time)
             star.y = -5;
         }
 
-
         const twinkle =
             Math.sin(
                 time
@@ -234,34 +211,27 @@ function drawStars(time)
                 + star.twinkleOffset
             );
 
-
         star.opacity =
             star.baseOpacity
             + twinkle * 0.08;
-
 
         const parallaxX =
             mouseX
             * star.depth
             * 10;
 
-
         const parallaxY =
             mouseY
             * star.depth
             * 10;
 
-
         const drawX =
             star.x + parallaxX;
-
 
         const drawY =
             star.y + parallaxY;
 
-
         spaceContext.beginPath();
-
 
         spaceContext.arc(
             drawX,
@@ -270,7 +240,6 @@ function drawStars(time)
             0,
             Math.PI * 2
         );
-
 
         spaceContext.fillStyle =
             `rgba(
@@ -283,9 +252,7 @@ function drawStars(time)
                 )}
             )`;
 
-
         spaceContext.fill();
-
 
         if (
             star.size > 1.25
@@ -302,7 +269,6 @@ function drawStars(time)
                     star.size * 2.5
                 );
 
-
             glow.addColorStop(
                 0,
                 `rgba(
@@ -313,15 +279,12 @@ function drawStars(time)
                 )`
             );
 
-
             glow.addColorStop(
                 1,
                 "rgba(255, 255, 255, 0)"
             );
 
-
             spaceContext.beginPath();
-
 
             spaceContext.arc(
                 drawX,
@@ -331,16 +294,13 @@ function drawStars(time)
                 Math.PI * 2
             );
 
-
             spaceContext.fillStyle =
                 glow;
-
 
             spaceContext.fill();
         }
     }
 }
-
 
 // ============================================================
 // SPACE RENDER LOOP
@@ -355,7 +315,6 @@ function drawSpace(time)
         spaceCanvas.width,
         spaceCanvas.height
     );
-
 
     const background =
         spaceContext.createRadialGradient(
@@ -372,28 +331,23 @@ function drawSpace(time)
             )
         );
 
-
     background.addColorStop(
         0,
         "#0b0a10"
     );
-
 
     background.addColorStop(
         0.5,
         "#050507"
     );
 
-
     background.addColorStop(
         1,
         "#010102"
     );
 
-
     spaceContext.fillStyle =
         background;
-
 
     spaceContext.fillRect(
         0,
@@ -402,20 +356,16 @@ function drawSpace(time)
         spaceCanvas.height
     );
 
-
     const nebulaTime =
         time * 0.00003;
-
 
     const nebulaX =
         spaceCanvas.width * 0.25
         + Math.sin(nebulaTime) * 80;
 
-
     const nebulaY =
         spaceCanvas.height * 0.3
         + Math.cos(nebulaTime) * 50;
-
 
     drawNebula(
         nebulaX,
@@ -427,16 +377,13 @@ function drawSpace(time)
         0.035
     );
 
-
     const nebulaX2 =
         spaceCanvas.width * 0.75
         + Math.cos(nebulaTime * 0.7) * 100;
 
-
     const nebulaY2 =
         spaceCanvas.height * 0.7
         + Math.sin(nebulaTime * 0.7) * 60;
-
 
     drawNebula(
         nebulaX2,
@@ -448,14 +395,12 @@ function drawSpace(time)
         0.025
     );
 
-
     mouseX +=
         (
             targetMouseX
             - mouseX
         )
         * 0.02;
-
 
     mouseY +=
         (
@@ -464,15 +409,12 @@ function drawSpace(time)
         )
         * 0.02;
 
-
     drawStars(time);
-
 
     requestAnimationFrame(
         drawSpace
     );
 }
-
 
 // ============================================================
 // MOUSE PARALLAX
@@ -487,14 +429,12 @@ window.addEventListener(
             / window.innerWidth
             - 0.5;
 
-
         targetMouseY =
             event.clientY
             / window.innerHeight
             - 0.5;
     }
 );
-
 
 // ============================================================
 // SPACE RESIZE
@@ -510,7 +450,6 @@ window.addEventListener(
     }
 );
 
-
 // ============================================================
 // DRAWING CANVAS
 // ============================================================
@@ -520,70 +459,57 @@ const drawingCanvas =
         "drawingCanvas"
     );
 
-
 const drawingContext =
     drawingCanvas.getContext("2d");
-
 
 const startButton =
     document.getElementById(
         "startButton"
     );
 
-
 const clearButton =
     document.getElementById(
         "clearButton"
     );
-
 
 const predictionElement =
     document.getElementById(
         "prediction"
     );
 
-
 const confidenceElement =
     document.getElementById(
         "confidence"
     );
-
 
 const feedbackSection =
     document.getElementById(
         "feedbackSection"
     );
 
-
 const feedbackOverlay =
     document.getElementById(
         "feedbackOverlay"
     );
-
 
 const yesButton =
     document.getElementById(
         "yesButton"
     );
 
-
 const noButton =
     document.getElementById(
         "noButton"
     );
-
 
 const networkStatus =
     document.getElementById(
         "networkStatus"
     );
 
-
 let isDrawing = false;
 
-
 let currentPrediction = null;
-
 
 // ============================================================
 // INITIALIZE DRAWING CANVAS
@@ -594,7 +520,6 @@ function initializeDrawingCanvas()
     drawingContext.fillStyle =
         "#020203";
 
-
     drawingContext.fillRect(
         0,
         0,
@@ -602,23 +527,18 @@ function initializeDrawingCanvas()
         drawingCanvas.height
     );
 
-
     drawingContext.lineCap =
         "round";
-
 
     drawingContext.lineJoin =
         "round";
 
-
     drawingContext.strokeStyle =
         "#ffffff";
-
 
     drawingContext.lineWidth =
         18;
 }
-
 
 // ============================================================
 // GET CANVAS POSITION
@@ -628,7 +548,6 @@ function getCanvasPosition(event)
 {
     const rect =
         drawingCanvas.getBoundingClientRect();
-
 
     return {
 
@@ -651,7 +570,6 @@ function getCanvasPosition(event)
     };
 }
 
-
 // ============================================================
 // START DRAWING
 // ============================================================
@@ -660,25 +578,20 @@ function startDrawing(event)
 {
     isDrawing = true;
 
-
     const position =
         getCanvasPosition(event);
 
-
     drawingContext.beginPath();
-
 
     drawingContext.moveTo(
         position.x,
         position.y
     );
 
-
     drawingCanvas.setPointerCapture(
         event.pointerId
     );
 }
-
 
 // ============================================================
 // DRAW
@@ -691,20 +604,16 @@ function draw(event)
         return;
     }
 
-
     const position =
         getCanvasPosition(event);
-
 
     drawingContext.lineTo(
         position.x,
         position.y
     );
 
-
     drawingContext.stroke();
 }
-
 
 // ============================================================
 // STOP DRAWING
@@ -717,13 +626,10 @@ function stopDrawing()
         return;
     }
 
-
     isDrawing = false;
-
 
     drawingContext.closePath();
 }
-
 
 // ============================================================
 // POINTER EVENTS
@@ -734,24 +640,20 @@ drawingCanvas.addEventListener(
     startDrawing
 );
 
-
 drawingCanvas.addEventListener(
     "pointermove",
     draw
 );
-
 
 drawingCanvas.addEventListener(
     "pointerup",
     stopDrawing
 );
 
-
 drawingCanvas.addEventListener(
     "pointercancel",
     stopDrawing
 );
-
 
 // ============================================================
 // CLEAR CANVAS
@@ -762,7 +664,6 @@ function clearCanvas()
     drawingContext.fillStyle =
         "#020203";
 
-
     drawingContext.fillRect(
         0,
         0,
@@ -770,42 +671,33 @@ function clearCanvas()
         drawingCanvas.height
     );
 
-
     predictionElement.textContent =
         "—";
 
-
     confidenceElement.textContent =
         "Waiting for input...";
-
 
     feedbackSection.classList.add(
         "hidden"
     );
 
-
     currentPrediction =
         null;
 
-
     resetNetwork();
-
 
     networkStatus.textContent =
         "NETWORK IDLE";
-
 
     networkStatus.classList.remove(
         "active"
     );
 }
 
-
 clearButton.addEventListener(
     "click",
     clearCanvas
 );
-
 
 // ============================================================
 // CONVERT DRAWING TO 28×28
@@ -818,17 +710,14 @@ function getPixels()
             "canvas"
         );
 
-
     smallCanvas.width = 28;
 
     smallCanvas.height = 28;
-
 
     const smallContext =
         smallCanvas.getContext(
             "2d"
         );
-
 
     smallContext.drawImage(
         drawingCanvas,
@@ -839,7 +728,6 @@ function getPixels()
         28
     );
 
-
     const imageData =
         smallContext.getImageData(
             0,
@@ -848,9 +736,7 @@ function getPixels()
             28
         );
 
-
     const pixels = [];
-
 
     for (
         let i = 0;
@@ -862,14 +748,11 @@ function getPixels()
         const red =
             imageData.data[i];
 
-
         const green =
             imageData.data[i + 1];
 
-
         const blue =
             imageData.data[i + 2];
-
 
         const brightness =
             (
@@ -879,16 +762,13 @@ function getPixels()
             )
             / 3;
 
-
         pixels.push(
             brightness / 255
         );
     }
 
-
     return pixels;
 }
-
 
 // ============================================================
 // PREDICT DIGIT
@@ -898,7 +778,6 @@ async function predictDigit()
 {
     const pixels =
         getPixels();
-
 
     if (pixels.length !== 784)
     {
@@ -910,35 +789,27 @@ async function predictDigit()
         return;
     }
 
-
     predictionElement.textContent =
         "...";
 
-
     confidenceElement.textContent =
         "Neural network is thinking...";
-
 
     feedbackSection.classList.add(
         "hidden"
     );
 
-
     currentPrediction =
         null;
 
-
     networkStatus.textContent =
         "PROCESSING INPUT...";
-
 
     networkStatus.classList.add(
         "active"
     );
 
-
     resetNetwork();
-
 
     try
     {
@@ -966,10 +837,8 @@ async function predictDigit()
                 }
             );
 
-
         const result =
             await response.json();
-
 
         if (!response.ok)
         {
@@ -980,51 +849,39 @@ async function predictDigit()
             );
         }
 
-
         currentPrediction =
             result.prediction;
 
-
         predictionElement.textContent =
             result.prediction;
-
 
         predictionElement.classList.remove(
             "prediction-active"
         );
 
-
         void predictionElement.offsetWidth;
-
 
         predictionElement.classList.add(
             "prediction-active"
         );
 
-
         const confidence =
             result.confidence
             * 100;
-
 
         confidenceElement.textContent =
             `Confidence: ${
                 confidence.toFixed(2)
             }%`;
 
-
         feedbackSection.classList.remove(
             "hidden"
         );
 
-
         networkStatus.textContent =
             "PREDICTION COMPLETE";
 
-
-        animateNetwork(
-            result.prediction
-        );
+        animateNetwork(result);
 
     }
     catch (error)
@@ -1035,18 +892,14 @@ async function predictDigit()
             error
         );
 
-
         predictionElement.textContent =
             "?";
-
 
         confidenceElement.textContent =
             "Connection error";
 
-
         networkStatus.textContent =
             "NETWORK ERROR";
-
 
         networkStatus.classList.remove(
             "active"
@@ -1054,7 +907,6 @@ async function predictDigit()
 
     }
 }
-
 
 // ============================================================
 // START BUTTON
@@ -1065,300 +917,389 @@ startButton.addEventListener(
     predictDigit
 );
 
+ // ============================================================
+ // NETWORK VISUALIZATION
+ // ============================================================
+
+ const networkLayers =
+     document.querySelectorAll(".network-layer");
+
+ const networkConnections =
+     document.querySelectorAll(".network-connections");
+
+ const outputNeurons =
+     document.querySelectorAll(".output-neurons span");
+
+ let networkAnimationTimers = [];
+
+ // ============================================================
+ // SCHEDULE ANIMATION STEP
+ // ============================================================
+
+ function scheduleNetworkStep(callback, delay)
+ {
+     const timer = setTimeout(callback, delay);
+
+     networkAnimationTimers.push(timer);
+ }
+
+ // ============================================================
+ // SAMPLE ARRAY
+ // ============================================================
+
+ function sampleArray(values, count)
+ {
+     if (
+         !Array.isArray(values) ||
+         values.length === 0 ||
+         count <= 0
+     )
+     {
+         return [];
+     }
+
+     if (values.length <= count)
+     {
+         return values.slice();
+     }
+
+     const sampled = [];
+
+     for (let i = 0; i < count; i++)
+     {
+         const index = Math.round(
+             i * (values.length - 1) /
+             Math.max(1, count - 1)
+         );
+
+         sampled.push(values[index]);
+     }
+
+     return sampled;
+ }
+
+ // ============================================================
+ // NORMALIZE ACTIVATIONS
+ // ============================================================
+
+ function normalizeActivations(values)
+ {
+     const maxValue = Math.max(
+         0.000001,
+         ...values.map(
+             value => Math.abs(Number(value) || 0)
+         )
+     );
+
+     return values.map(value =>
+     {
+         return Math.min(
+             1,
+             Math.abs(Number(value) || 0) / maxValue
+         );
+     });
+ }
+
+ // ============================================================
+ // RENDER NEURON VALUES
+ // ============================================================
+
+ function renderNeuronValues(container, values, label)
+ {
+     if (!container || !Array.isArray(values))
+     {
+         return;
+     }
+
+     const neurons =
+         container.querySelectorAll(".neurons span");
+
+     const displayedValues =
+         sampleArray(values, neurons.length);
+
+     const strengths =
+         normalizeActivations(displayedValues);
+
+     neurons.forEach((neuron, index) =>
+     {
+         const value =
+             Number(displayedValues[index]) || 0;
 
-// ============================================================
-// NETWORK VISUALIZATION
-// ============================================================
+         const strength =
+             strengths[index] || 0;
 
-const networkLayers =
-    document.querySelectorAll(
-        ".network-layer"
-    );
+         neuron.classList.toggle(
+             "active",
+             strength > 0.01
+         );
 
+         neuron.style.opacity =
+             String(0.25 + strength * 0.75);
 
-const networkConnections =
-    document.querySelectorAll(
-        ".network-connections"
-    );
+         neuron.style.boxShadow =
+             strength > 0.01
+                 ? `0 0 ${4 + strength * 16}px rgba(255, 55, 65, ${0.15 + strength * 0.65})`
+                 : "none";
 
+         neuron.title =
+             `${label}: ${value.toFixed(6)}`;
 
-const hiddenNeurons =
-    document.querySelectorAll(
-        ".neurons span"
-    );
+         neuron.dataset.activation =
+             String(value);
+     });
+ }
 
+ // ============================================================
+ // RESET NETWORK
+ // ============================================================
 
-const outputNeurons =
-    document.querySelectorAll(
-        ".output-neurons span"
-    );
+ function resetNetwork()
+ {
+     networkAnimationTimers.forEach(clearTimeout);
 
-
-// ============================================================
-// RESET NETWORK
-// ============================================================
-
-function resetNetwork()
-{
-
-    networkLayers.forEach(
-        (layer) =>
-        {
-            layer.classList.remove(
-                "active"
-            );
-        }
-    );
-
-
-    networkConnections.forEach(
-        (connection) =>
-        {
-            connection.classList.remove(
-                "active"
-            );
-        }
-    );
-
-
-    hiddenNeurons.forEach(
-        (neuron) =>
-        {
-            neuron.classList.remove(
-                "active"
-            );
-        }
-    );
-
-
-    outputNeurons.forEach(
-        (neuron) =>
-        {
-            neuron.classList.remove(
-                "active"
-            );
-        }
-    );
-}
-
-
-// ============================================================
-// NETWORK ANIMATION
-// ============================================================
-
-function animateNetwork(
-    prediction
-)
-{
-    resetNetwork();
-
-
-    networkStatus.textContent =
-        "FORWARD PASS";
-
-
-    networkStatus.classList.add(
-        "active"
-    );
-
-
-    // --------------------------------------------------------
-    // INPUT
-    // --------------------------------------------------------
-
-    setTimeout(
-        () =>
-        {
-
-            networkLayers[0]
-                .classList.add(
-                    "active"
-                );
-
-
-            activateRandomNeurons(
-                0,
-                8
-            );
-
-        },
-        100
-    );
-
-
-    // --------------------------------------------------------
-    // INPUT → HIDDEN 1
-    // --------------------------------------------------------
-
-    setTimeout(
-        () =>
-        {
-
-            networkConnections[0]
-                .classList.add(
-                    "active"
-                );
-
-        },
-        450
-    );
-
-
-    // --------------------------------------------------------
-    // HIDDEN 1
-    // --------------------------------------------------------
-
-    setTimeout(
-        () =>
-        {
-
-            networkLayers[1]
-                .classList.add(
-                    "active"
-                );
-
-
-            activateRandomNeurons(
-                8,
-                7
-            );
-
-        },
-        700
-    );
-
-
-    // --------------------------------------------------------
-    // HIDDEN 1 → HIDDEN 2
-    // --------------------------------------------------------
-
-    setTimeout(
-        () =>
-        {
-
-            networkConnections[1]
-                .classList.add(
-                    "active"
-                );
-
-        },
-        1050
-    );
-
-
-    // --------------------------------------------------------
-    // HIDDEN 2
-    // --------------------------------------------------------
-
-    setTimeout(
-        () =>
-        {
-
-            networkLayers[2]
-                .classList.add(
-                    "active"
-                );
-
-
-            activateRandomNeurons(
-                15,
-                7
-            );
-
-        },
-        1300
-    );
-
-
-    // --------------------------------------------------------
-    // HIDDEN 2 → OUTPUT
-    // --------------------------------------------------------
-
-    setTimeout(
-        () =>
-        {
-
-            networkConnections[2]
-                .classList.add(
-                    "active"
-                );
-
-        },
-        1650
-    );
-
-
-    // --------------------------------------------------------
-    // OUTPUT
-    // --------------------------------------------------------
-
-    setTimeout(
-        () =>
-        {
-
-            networkLayers[3]
-                .classList.add(
-                    "active"
-                );
-
-
-            const output =
-                outputNeurons[
-                    prediction
-                ];
-
-
-            if (output)
-            {
-                output.classList.add(
-                    "active"
-                );
-            }
-
-
-            networkStatus.textContent =
-                "PREDICTION: "
-                + prediction;
-
-        },
-        1900
-    );
-}
-
-
-// ============================================================
-// ACTIVATE RANDOM NEURONS
-// ============================================================
-
-function activateRandomNeurons(
-    startIndex,
-    count
-)
-{
-    for (
-        let i = 0;
-        i < count;
-        i++
-    )
-    {
-
-        const index =
-            startIndex + i;
-
-
-        if (
-            hiddenNeurons[index]
-        )
-        {
-
-            hiddenNeurons[index]
-                .classList.add(
-                    "active"
-                );
-        }
-    }
-}
-
+     networkAnimationTimers = [];
+
+     networkLayers.forEach(layer =>
+     {
+         layer.classList.remove("active");
+
+         layer.querySelectorAll(".neurons span")
+             .forEach(neuron =>
+             {
+                 neuron.classList.remove("active");
+
+                 neuron.style.opacity = "";
+                 neuron.style.boxShadow = "";
+
+                 neuron.removeAttribute("title");
+
+                 delete neuron.dataset.activation;
+             });
+     });
+
+     networkConnections.forEach(connection =>
+     {
+         connection.classList.remove("active");
+     });
+
+     outputNeurons.forEach(neuron =>
+     {
+         neuron.classList.remove("active");
+
+         neuron.style.opacity = "";
+         neuron.style.boxShadow = "";
+
+         neuron.removeAttribute("title");
+
+         delete neuron.dataset.probability;
+     });
+ }
+
+ // ============================================================
+ // NETWORK ANIMATION
+ // ============================================================
+
+ function animateNetwork(result)
+ {
+     resetNetwork();
+
+     if (
+         !result ||
+         !Array.isArray(result.input) ||
+         !Array.isArray(result.hidden1) ||
+         !Array.isArray(result.hidden2) ||
+         !Array.isArray(result.output)
+     )
+     {
+         console.error(
+             "Incomplete neural network trace:",
+             result
+         );
+
+         networkStatus.textContent =
+             "TRACE DATA MISSING";
+
+         networkStatus.classList.remove("active");
+
+         return;
+     }
+
+     networkStatus.textContent =
+         "FORWARD PASS";
+
+     networkStatus.classList.add("active");
+
+     const inputLayer =
+         networkLayers[0];
+
+     const hidden1Layer =
+         networkLayers[1];
+
+     const hidden2Layer =
+         networkLayers[2];
+
+     const outputLayer =
+         networkLayers[3];
+
+     // --------------------------------------------------------
+     // STAGE 1: INPUT
+     // --------------------------------------------------------
+
+     scheduleNetworkStep(() =>
+     {
+         if (inputLayer)
+         {
+             inputLayer.classList.add("active");
+
+             renderNeuronValues(
+                 inputLayer,
+                 result.input,
+                 "Input pixel"
+             );
+         }
+     }, 100);
+
+     // --------------------------------------------------------
+     // STAGE 2: INPUT -> HIDDEN 1
+     // --------------------------------------------------------
+
+     scheduleNetworkStep(() =>
+     {
+         if (networkConnections[0])
+         {
+             networkConnections[0].classList.add("active");
+         }
+     }, 450);
+
+     // --------------------------------------------------------
+     // STAGE 3: HIDDEN LAYER 1
+     // --------------------------------------------------------
+
+     scheduleNetworkStep(() =>
+     {
+         if (hidden1Layer)
+         {
+             hidden1Layer.classList.add("active");
+
+             renderNeuronValues(
+                 hidden1Layer,
+                 result.hidden1,
+                 "Hidden layer 1 activation"
+             );
+         }
+     }, 700);
+
+     // --------------------------------------------------------
+     // STAGE 4: HIDDEN 1 -> HIDDEN 2
+     // --------------------------------------------------------
+
+     scheduleNetworkStep(() =>
+     {
+         if (networkConnections[1])
+         {
+             networkConnections[1].classList.add("active");
+         }
+     }, 1050);
+
+     // --------------------------------------------------------
+     // STAGE 5: HIDDEN LAYER 2
+     // --------------------------------------------------------
+
+     scheduleNetworkStep(() =>
+     {
+         if (hidden2Layer)
+         {
+             hidden2Layer.classList.add("active");
+
+             renderNeuronValues(
+                 hidden2Layer,
+                 result.hidden2,
+                 "Hidden layer 2 activation"
+             );
+         }
+     }, 1300);
+
+     // --------------------------------------------------------
+     // STAGE 6: HIDDEN 2 -> OUTPUT
+     // --------------------------------------------------------
+
+     scheduleNetworkStep(() =>
+     {
+         if (networkConnections[2])
+         {
+             networkConnections[2].classList.add("active");
+         }
+     }, 1650);
+
+     // --------------------------------------------------------
+     // STAGE 7: OUTPUT
+     // --------------------------------------------------------
+
+     scheduleNetworkStep(() =>
+     {
+         if (outputLayer)
+         {
+             outputLayer.classList.add("active");
+         }
+
+         const probabilities =
+             result.output;
+
+         const logits =
+             Array.isArray(result.logits)
+                 ? result.logits
+                 : [];
+
+         const maxProbability = Math.max(
+             0.000001,
+             ...probabilities.map(
+                 value => Number(value) || 0
+             )
+         );
+
+         outputNeurons.forEach((neuron, index) =>
+         {
+             const probability =
+                 Number(probabilities[index]) || 0;
+
+             const strength =
+                 Math.min(
+                     1,
+                     probability / maxProbability
+                 );
+
+             const isPrediction =
+                 index === Number(result.prediction);
+
+             neuron.classList.toggle(
+                 "active",
+                 isPrediction
+             );
+
+             neuron.style.opacity =
+                 String(0.3 + strength * 0.7);
+
+             neuron.style.boxShadow =
+                 probability > 0
+                     ? `0 0 ${4 + strength * 18}px rgba(255, 55, 65, ${0.15 + strength * 0.65})`
+                     : "none";
+
+             neuron.dataset.probability =
+                 String(probability);
+             neuron.title =
+                 `Digit ${index}: ${(probability * 100).toFixed(2)}% probability` +
+                 (
+                     logits[index] !== undefined
+                         ? `; logit: ${Number(logits[index]).toFixed(6)}`
+                         : ""
+                 );
+         });
+
+         networkStatus.textContent =
+             "PREDICTION: " + result.prediction;
+
+     }, 1900);
+ }
 
 // ============================================================
 // FEEDBACK EFFECT
@@ -1374,15 +1315,12 @@ function showFeedback(
         "error"
     );
 
-
     void feedbackOverlay.offsetWidth;
-
 
     feedbackOverlay.classList.add(
         type
     );
 }
-
 
 // ============================================================
 // YES BUTTON
@@ -1398,7 +1336,6 @@ yesButton.addEventListener(
     }
 );
 
-
 // ============================================================
 // NO BUTTON
 // ============================================================
@@ -1413,7 +1350,6 @@ noButton.addEventListener(
     }
 );
 
-
 // ============================================================
 // INITIALIZATION
 // ============================================================
@@ -1423,7 +1359,6 @@ resizeSpaceCanvas();
 createStars();
 
 initializeDrawingCanvas();
-
 
 requestAnimationFrame(
     drawSpace
