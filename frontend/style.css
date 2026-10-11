@@ -1309,3 +1309,127 @@ body {
             180px;
     }
 }
+
+/* ============================================================
+   NETWORK DISPLAY MODES
+   ============================================================ */
+
+.network-mode-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.network-mode-button {
+    min-width: 110px;
+    padding: 11px 18px;
+
+    border: 1px solid rgba(255, 38, 56, 0.25);
+    border-radius: 7px;
+
+    background: rgba(255, 38, 56, 0.035);
+    color: #777780;
+
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.network-mode-button:hover {
+    color: #ffffff;
+    border-color: rgba(255, 38, 56, 0.65);
+    background: rgba(255, 38, 56, 0.09);
+    transform: translateY(-2px);
+}
+
+.network-mode-button.active {
+    color: #ffffff;
+    border-color: rgba(255, 38, 56, 0.8);
+    background: rgba(255, 38, 56, 0.14);
+
+    box-shadow:
+        0 0 12px rgba(255, 38, 56, 0.12),
+        inset 0 0 12px rgba(255, 38, 56, 0.035);
+}
+
+.network-mode-button:focus-visible {
+    outline: 2px solid rgba(255, 70, 85, 0.8);
+    outline-offset: 4px;
+}
+
+/* ============================================================
+   FULL NETWORK CANVAS
+   ============================================================ */
+
+.network-canvas {
+    display: block;
+    width: 100%;
+    height: 480px;
+
+    border: 1px solid rgba(255, 38, 56, 0.12);
+    border-radius: 8px;
+
+    background: rgba(2, 2, 5, 0.75);
+
+    box-shadow:
+        inset 0 0 35px rgba(255, 38, 56, 0.025);
+
+    touch-action: pan-y;
+}
+
+.network-canvas.hidden {
+    display: none;
+}
+
+/* ============================================================
+   NETWORK VIEW TRANSITIONS
+   ============================================================ */
+
+.network-visualization,
+.network-canvas {
+    transition:
+        opacity 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.network-section.mode-full .network-visualization {
+    display: none;
+}
+
+.network-section.mode-compact .network-canvas {
+    display: none;
+}
+
+/* ============================================================
+   MOBILE NETWORK CONTROLS
+   ============================================================ */
+
+@media (max-width: 650px) {
+    .network-mode-controls {
+        gap: 8px;
+        margin: 15px 0;
+    }
+
+    .network-mode-button {
+        min-width: 95px;
+        padding: 10px 12px;
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+    .network-canvas {
+        height: 350px;
+    }
+}
