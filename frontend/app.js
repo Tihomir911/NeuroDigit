@@ -951,6 +951,10 @@ startButton.addEventListener(
  const networkModeButtons =
      document.querySelectorAll("[data-network-mode]");
 
+     let latestNetworkResult = null;
+
+     let fullNetworkStage = -1;
+
  // Draw a representative diagram of the network architecture.
  // The numbers in the labels are the actual layer sizes.
  function drawFullNetwork()
@@ -1162,7 +1166,10 @@ startButton.addEventListener(
 
          if (mode === "full")
          {
-             drawFullNetwork();
+             drawFullNetworkTrace(
+                latestNetworkResult,
+                fullNetworkStage
+            );
          }
      });
  });
@@ -1170,6 +1177,195 @@ startButton.addEventListener(
  // ============================================================
  // SCHEDULE ANIMATION STEP
  // ============================================================
+
+
+ // ============================================================
+ // RENDER REAL NETWORK ACTIVATIONS
+ // ============================================================
+
+ function drawFullNetworkTrace(result, stage)
+ {
+     // First draw the base architecture.
+     drawFullNetwork();
+
+     if (!result || !networkCanvasContext)
+     {
+         return;
+     }
+
+     const ctx = networkCanvasContext;
+
+     const layers = [
+         {
+             x: 110,
+             count: 28,
+             values: result.input,
+             activationStage: 0
+         },
+         {
+             x: 430,
+             count: 18,
+             values: result.hidden1,
+             activationStage: 2
+         },
+         {
+             x: 750,
+             count: 14,
+             values: result.hidden2,
+             activationStage: 4
+         },
+         {
+             x: 1070,
+             count: 10,
+             values: result.output,
+             activationStage: 6
+         }
+     ];
+
+     const top = 100;
+     const bottom = 390;
+
+     // Draw real activation strengths over the representative nodes.
+     layers.forEach((layer, layerIndex) =>
+     {
+         if (
+             stage < layer.activationStage ||
+             !Array.isArray(layer.values)
+         )
+         {
+             return;
+         }
+
+         const values = sampleArray(
+             layer.values,
+             layer.count
+         );
+
+         const maxValue = Math.max(
+             0.000001,
+             ...values.map(value =>
+                 Math.abs(Number(value) || 0)
+             )
+         );
+
+         values.forEach((value, index) =>
+         {
+             const strength = Math.min(
+                 1,
+                 Math.abs(Number(value) || 0) / maxValue
+             );
+
+             const y = layer.count === 1
+                 ? (top + bottom) / 2
+                 : top + index * (bottom - top) /
+                     (layer.count - 1);
+
+             const radius = layerIndex === 3 ? 6 : 4.2;
+
+             ctx.beginPath();
+             ctx.arc(layer.x, y, radius + 2, 0, Math.PI * 2);
+
+             ctx.fillStyle =
+                 `rgba(255, 45, 60, ${0.12 + strength * 0.65})`;
+
+             ctx.fill();
+
+             ctx.beginPath();
+             ctx.arc(layer.x, y, radius, 0, Math.PI * 2);
+
+             ctx.fillStyle =
+                 `rgba(255, ${Math.round(100 - strength * 55)}, ${Math.round(110 - strength * 60)}, ${0.35 + strength * 0.65})`;
+
+             ctx.fill();
+
+             ctx.strokeStyle =
+                 `rgba(255, 160, 165, ${0.25 + strength * 0.75})`;
+
+             ctx.lineWidth = 1;
+             ctx.stroke();
+         });
+     });
+
+     // Highlight the current connection stage.
+     // These lines show the forward-pass sequence, not actual weights.
+     const connectionStages = [1, 3, 5];
+
+     connectionStages.forEach((connectionStage, index) =>
+     {
+         if (
+             stage < connectionStage ||
+             stage >= connectionStage + 2
+         )
+         {
+             return;
+         }
+
+         const left = layers[index];
+         const right = layers[index + 1];
+
+         const leftNodes = Array.from(
+             { length: left.count },
+             (_, i) => ({
+                 x: left.x,
+                 y: top + i * (bottom - top) /
+                     (left.count - 1)
+             })
+         );
+
+         const rightNodes = Array.from(
+             { length: right.count },
+             (_, i) => ({
+                 x: right.x,
+                 y: top + i * (bottom - top) /
+                     (right.count - 1)
+             })
+         );
+
+         ctx.save();
+         ctx.strokeStyle = "rgba(255, 55, 70, 0.65)";
+         ctx.lineWidth = 1.2;
+         ctx.shadowColor = "#ff2638";
+         ctx.shadowBlur = 7;
+
+         // Highlight a readable subset instead of every connection.
+         leftNodes.forEach((from, i) =>
+         {
+             const targetIndex = Math.floor(
+                 i * rightNodes.length / leftNodes.length
+             );
+
+             const to = rightNodes[targetIndex];
+
+             ctx.beginPath();
+             ctx.moveTo(from.x, from.y);
+             ctx.lineTo(to.x, to.y);
+             ctx.stroke();
+         });
+
+         ctx.restore();
+     });
+
+     // Show the current forward-pass stage.
+     const stageLabels = [
+         "INPUT ACTIVATIONS",
+         "INPUT → HIDDEN 1",
+         "HIDDEN 1 ACTIVATIONS",
+         "HIDDEN 1 → HIDDEN 2",
+         "HIDDEN 2 ACTIVATIONS",
+         "HIDDEN 2 → OUTPUT",
+         "OUTPUT PROBABILITIES"
+     ];
+
+     ctx.textAlign = "center";
+     ctx.font = "bold 12px monospace";
+     ctx.fillStyle = "#ff6875";
+
+     ctx.fillText(
+         stageLabels[stage] || "NETWORK READY",
+         networkCanvas.width / 2,
+         435
+     );
+ }
 
  function scheduleNetworkStep(callback, delay)
  {
@@ -1359,10 +1555,45 @@ startButton.addEventListener(
          return;
      }
 
+     latestNetworkResult = result;
+
+     fullNetworkStage = -1;
+
      networkStatus.textContent =
          "FORWARD PASS";
 
      networkStatus.classList.add("active");
+
+
+     // Animate the full canvas using real backend activations.
+     const fullStages = [
+        { stage: 0, delay: 100 },
+        { stage: 1, delay: 450 },
+        { stage: 2, delay: 700 },
+        { stage: 3, delay: 1050 },
+        { stage: 4, delay: 1300 },
+        { stage: 5, delay: 1650 },
+        { stage: 6, delay: 1900 }
+     ];
+
+     fullStages.forEach(({ stage, delay }) =>
+     {
+        scheduleNetworkStep(() =>
+        {
+             fullNetworkStage = stage;
+
+             if (
+                 networkSection &&
+                 networkSection.classList.contains("mode-full")
+            )
+            {
+                 drawFullNetworkTrace(
+                     latestNetworkResult,
+                    fullNetworkStage
+                );
+            }
+        }, delay);
+     });
 
      const inputLayer =
          networkLayers[0];
