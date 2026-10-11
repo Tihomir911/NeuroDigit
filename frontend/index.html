@@ -236,40 +236,51 @@
 
                 <!-- INPUT -->
 
-                <div class="network-layer input-layer">
+                
+                <!-- =====================================
+                NETWORK DISPLAY MODE
+                ===================================== -->
 
+                <div class="network-mode-controls">
 
-                    <div class="layer-title">
+                    <button
+                        id="fullModeButton"
+                        class="secondary-button network-mode-button active"
+                        type="button"
+                        aria-pressed="true"
+                >
+                        FULL 784
+                    </button>
 
-                        INPUT
-
-                    </div>
-
-
-                    <div class="neurons">
-
-
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-
-
-                    </div>
-
-
-                    <div class="layer-size">
-
-                        784
-
-                    </div>
-
+                    <button
+                        id="compactModeButton"
+                        class="secondary-button network-mode-button"
+                        type="button"
+                        aria-pressed="false"
+                    >
+                        COMPACT 56
+                    </button>
 
                 </div>
+
+
+                <!-- =====================================
+                FULL / COMPACT NETWORK CANVAS
+                ===================================== -->
+
+                <canvas
+                    id="networkCanvas"
+                    class="network-canvas hidden"
+                    aria-label="Interactive neural network visualization"
+                ></canvas>
+
+
+                <!-- =====================================
+                EXISTING NETWORK VISUALIZATION
+                Keep the existing contents below.
+                ===================================== -->
+
+                <div class="network-visualization">
 
 
                 <!-- CONNECTION -->
