@@ -220,11 +220,51 @@
          NEURAL NETWORK VISUALIZATION
          ========================================= -->
 
-    <section class="network-section">
+    <section class="network-section mode-compact">
 
         <div class="section-title">
             NEURAL NETWORK
         </div>
+
+        <!-- NETWORK DISPLAY MODES -->
+
+        <div
+            class="network-mode-controls"
+            role="group"
+            aria-label="Network display mode"
+        >
+
+            <button
+                type="button"
+                class="network-mode-button"
+                data-network-mode="full"
+                aria-pressed="false"
+            >
+                FULL
+            </button>
+
+            <button
+                type="button"
+                class="network-mode-button active"
+                data-network-mode="compact"
+                aria-pressed="true"
+            >
+                COMPACT
+            </button>
+
+        </div>
+
+        <!-- FULL NETWORK CANVAS -->
+
+        <canvas
+            id="networkCanvas"
+            class="network-canvas"
+            width="1200"
+            height="480"
+            aria-label="Full neural network visualization"
+        ></canvas>
+
+        <!-- EXISTING COMPACT VISUALIZATION -->
 
         <div class="network-visualization">
 
