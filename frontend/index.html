@@ -216,274 +216,152 @@
 
         </section>
 
-
-        <!-- =====================================
-             NEURAL NETWORK VISUALIZATION
-             ===================================== -->
-
-        <section class="network-section">
-
-
-            <div class="section-title">
-
-                NEURAL NETWORK
-
-            </div>
-
-
-            <div class="network-visualization">
-
-
-                <!-- INPUT -->
-
-                
-                <!-- =====================================
-                NETWORK DISPLAY MODE
-                ===================================== -->
-
-                <div class="network-mode-controls">
-
-                    <button
-                        id="fullModeButton"
-                        class="secondary-button network-mode-button active"
-                        type="button"
-                        aria-pressed="true"
-                    >
-                        FULL
-                    </button>
-
-                    <button
-                        id="compactModeButton"
-                        class="secondary-button network-mode-button"
-                        type="button"
-                        aria-pressed="false"
-                    >
-                        COMPACT
-                    </button>
-
-                </div>
-
-                <canvas
-                    id="networkCanvas"
-                    class="network-canvas hidden"
-                    aria-label="Neural network visualization"
-                ></canvas>
-
-
-                <!-- =====================================
-                    EXISTING NETWORK VISUALIZATION
-                    ===================================== -->
-
-                <div class="network-visualization">
-
-                <!-- INPUT -->
-
-                    <div class="network-layer input-layer">
-
-                        <div class="layer-title">
-                            INPUT
-                        </div>
-
-                        <div class="neurons">
-                        <spanspan></spanspan>
-                        <span></span>   
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-
-                    <div class="layer-size">
-                        784
-                    </div>
-
-                </div>
-
-                <!-- CONNECTION -->
-
-                <div class="network-visualization">
-
-
-                <!-- CONNECTION -->
-
-                <div class="network-connections">
-
-
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-
-
-                </div>
-
-
-                <!-- HIDDEN 1 -->
-
-                <div class="network-layer hidden-layer">
-
-
-                    <div class="layer-title">
-
-                        HIDDEN 1
-
-                    </div>
-
-
-                    <div class="neurons">
-
-
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-
-
-                    </div>
-
-
-                    <div class="layer-size">
-
-                        128
-
-                    </div>
-
-
-                </div>
-
-
-                <!-- CONNECTION -->
-
-                <div class="network-connections">
-
-
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-
-
-                </div>
-
-
-                <!-- HIDDEN 2 -->
-
-                <div class="network-layer hidden-layer">
-
-
-                    <div class="layer-title">
-
-                        HIDDEN 2
-
-                    </div>
-
-
-                    <div class="neurons">
-
-
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-
-
-                    </div>
-
-
-                    <div class="layer-size">
-
-                        64
-
-                    </div>
-
-
-                </div>
-
-
-                <!-- CONNECTION -->
-
-                <div class="network-connections">
-
-
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-
-
-                </div>
-
-
-                <!-- OUTPUT -->
-
-                <div class="network-layer output-layer">
-
-
-                    <div class="layer-title">
-
-                        OUTPUT
-
-                    </div>
-
-
-                    <div class="output-neurons">
-
-
-                        <span data-digit="0">0</span>
-                        <span data-digit="1">1</span>
-                        <span data-digit="2">2</span>
-                        <span data-digit="3">3</span>
-                        <span data-digit="4">4</span>
-                        <span data-digit="5">5</span>
-                        <span data-digit="6">6</span>
-                        <span data-digit="7">7</span>
-                        <span data-digit="8">8</span>
-                        <span data-digit="9">9</span>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-
-            <div
-                id="networkStatus"
-                class="network-status"
-            >
-
-                NETWORK IDLE
-
-            </div>
-
-
-        </section>
-
-
-    </main>
-
-
     <!-- =========================================
-         JAVASCRIPT
+         NEURAL NETWORK VISUALIZATION
          ========================================= -->
 
-    <script src="app.js"></script>
+    <section class="network-section">
 
-</body>
+        <div class="section-title">
+            NEURAL NETWORK
+        </div>
 
-</html>
+        <div class="network-visualization">
+
+            <!-- INPUT LAYER -->
+
+            <div class="network-layer input-layer">
+
+                <div class="layer-title">
+                    INPUT
+                </div>
+
+                <div class="neurons">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="layer-size">
+                    784
+                </div>
+
+            </div>
+
+            <!-- INPUT TO HIDDEN 1 -->
+
+            <div class="network-connections">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- HIDDEN LAYER 1 -->
+
+            <div class="network-layer hidden-layer">
+
+                <div class="layer-title">
+                    HIDDEN 1
+                </div>
+
+                <div class="neurons">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="layer-size">
+                    128
+                </div>
+
+            </div>
+
+            <!-- HIDDEN 1 TO HIDDEN 2 -->
+
+            <div class="network-connections">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- HIDDEN LAYER 2 -->
+
+            <div class="network-layer hidden-layer">
+
+                <div class="layer-title">
+                    HIDDEN 2
+                </div>
+
+                <div class="neurons">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="layer-size">
+                    64
+                </div>
+
+            </div>
+
+            <!-- HIDDEN 2 TO OUTPUT -->
+
+            <div class="network-connections">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- OUTPUT LAYER -->
+
+            <div class="network-layer output-layer">
+
+                <div class="layer-title">
+                    OUTPUT
+                </div>
+
+                <div class="output-neurons">
+                    <span data-digit="0">0</span>
+                    <span data-digit="1">1</span>
+                    <span data-digit="2">2</span>
+                    <span data-digit="3">3</span>
+                    <span data-digit="4">4</span>
+                    <span data-digit="5">5</span>
+                    <span data-digit="6">6</span>
+                    <span data-digit="7">7</span>
+                    <span data-digit="8">8</span>
+                    <span data-digit="9">9</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div
+            id="networkStatus"
+            class="network-status"
+        >
+            NETWORK IDLE
+        </div>
+
+    </section>
+
