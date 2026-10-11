@@ -248,8 +248,8 @@
                         class="secondary-button network-mode-button active"
                         type="button"
                         aria-pressed="true"
-                >
-                        FULL 784
+                    >
+                        FULL
                     </button>
 
                     <button
@@ -258,27 +258,51 @@
                         type="button"
                         aria-pressed="false"
                     >
-                        COMPACT 56
+                        COMPACT
                     </button>
 
                 </div>
 
-
-                <!-- =====================================
-                FULL / COMPACT NETWORK CANVAS
-                ===================================== -->
-
                 <canvas
                     id="networkCanvas"
                     class="network-canvas hidden"
-                    aria-label="Interactive neural network visualization"
+                    aria-label="Neural network visualization"
                 ></canvas>
 
 
                 <!-- =====================================
-                EXISTING NETWORK VISUALIZATION
-                Keep the existing contents below.
-                ===================================== -->
+                    EXISTING NETWORK VISUALIZATION
+                    ===================================== -->
+
+                <div class="network-visualization">
+
+                <!-- INPUT -->
+
+                    <div class="network-layer input-layer">
+
+                        <div class="layer-title">
+                            INPUT
+                        </div>
+
+                        <div class="neurons">
+                        <spanspan></spanspan>
+                        <span></span>   
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="layer-size">
+                        784
+                    </div>
+
+                </div>
+
+                <!-- CONNECTION -->
 
                 <div class="network-visualization">
 
