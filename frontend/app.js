@@ -932,6 +932,241 @@ startButton.addEventListener(
 
  let networkAnimationTimers = [];
 
+
+ // ============================================================
+ // NETWORK DISPLAY MODES
+ // ============================================================
+
+ const networkSection =
+     document.querySelector(".network-section");
+
+ const networkCanvas =
+     document.getElementById("networkCanvas");
+
+ const networkCanvasContext =
+     networkCanvas
+         ? networkCanvas.getContext("2d")
+         : null;
+
+ const networkModeButtons =
+     document.querySelectorAll("[data-network-mode]");
+
+ // Draw a representative diagram of the network architecture.
+ // The numbers in the labels are the actual layer sizes.
+ function drawFullNetwork()
+ {
+     if (!networkCanvas || !networkCanvasContext)
+     {
+         return;
+     }
+
+     const ctx = networkCanvasContext;
+     const width = networkCanvas.width;
+     const height = networkCanvas.height;
+
+     ctx.clearRect(0, 0, width, height);
+
+     // Background
+     ctx.fillStyle = "#050508";
+     ctx.fillRect(0, 0, width, height);
+
+     // Subtle background grid
+     ctx.strokeStyle = "rgba(255, 55, 65, 0.045)";
+     ctx.lineWidth = 1;
+
+     for (let x = 40; x < width; x += 40)
+     {
+         ctx.beginPath();
+         ctx.moveTo(x, 0);
+         ctx.lineTo(x, height);
+         ctx.stroke();
+     }
+
+     for (let y = 40; y < height; y += 40)
+     {
+         ctx.beginPath();
+         ctx.moveTo(0, y);
+         ctx.lineTo(width, y);
+         ctx.stroke();
+     }
+
+     const layers = [
+         {
+             name: "INPUT",
+             size: "784 NEURONS",
+             count: 28,
+             x: 110
+         },
+         {
+             name: "HIDDEN 1",
+             size: "128 NEURONS",
+             count: 18,
+             x: 430
+         },
+         {
+             name: "HIDDEN 2",
+             size: "64 NEURONS",
+             count: 14,
+             x: 750
+         },
+         {
+             name: "OUTPUT",
+             size: "10 CLASSES",
+             count: 10,
+             x: 1070
+         }
+     ];
+
+     const top = 100;
+     const bottom = 390;
+
+     // Calculate the positions of the representative neurons.
+     layers.forEach(layer =>
+     {
+         layer.nodes = [];
+
+         for (let i = 0; i < layer.count; i++)
+         {
+             const y = layer.count === 1
+                 ? (top + bottom) / 2
+                 : top + i * (bottom - top) / (layer.count - 1);
+
+             layer.nodes.push({ x: layer.x, y });
+         }
+     });
+
+     // Draw connections behind the neurons.
+     for (let layerIndex = 0; layerIndex < layers.length - 1; layerIndex++)
+     {
+         const currentLayer = layers[layerIndex];
+         const nextLayer = layers[layerIndex + 1];
+
+         currentLayer.nodes.forEach((from, fromIndex) =>
+         {
+             nextLayer.nodes.forEach((to, toIndex) =>
+             {
+                 ctx.beginPath();
+                 ctx.moveTo(from.x, from.y);
+                 ctx.lineTo(to.x, to.y);
+
+                 const variation = (fromIndex + toIndex) % 5;
+
+                 ctx.strokeStyle =
+                     `rgba(255, 48, 62, ${0.055 + variation * 0.012})`;
+
+                 ctx.lineWidth = 0.8;
+                 ctx.stroke();
+             });
+         });
+     }
+
+     // Draw layer labels and representative neurons.
+     layers.forEach((layer, layerIndex) =>
+     {
+         ctx.textAlign = "center";
+         ctx.textBaseline = "middle";
+
+         ctx.font = "bold 16px monospace";
+         ctx.fillStyle = "#ff4655";
+         ctx.fillText(layer.name, layer.x, 35);
+
+         ctx.font = "12px monospace";
+         ctx.fillStyle = "#92929e";
+         ctx.fillText(layer.size, layer.x, 57);
+
+         layer.nodes.forEach((node, nodeIndex) =>
+         {
+             const radius = layerIndex === 3 ? 6 : 4.2;
+
+             ctx.beginPath();
+             ctx.arc(node.x, node.y, radius + 4, 0, Math.PI * 2);
+             ctx.fillStyle = "rgba(255, 45, 60, 0.08)";
+             ctx.fill();
+
+             ctx.beginPath();
+             ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
+
+             if (layerIndex === 3)
+             {
+                 ctx.fillStyle = "#ff4655";
+             }
+             else
+             {
+                 ctx.fillStyle =
+                     `rgba(255, 95, 105, ${0.45 + (nodeIndex % 5) * 0.1})`;
+             }
+
+             ctx.fill();
+
+             ctx.strokeStyle = "rgba(255, 140, 150, 0.8)";
+             ctx.lineWidth = 0.8;
+             ctx.stroke();
+
+             if (layerIndex === 3)
+             {
+                 ctx.font = "11px monospace";
+                 ctx.fillStyle = "#f4dadd";
+                 ctx.fillText(
+                     String(nodeIndex),
+                     node.x,
+                     node.y + 17
+                 );
+             }
+         });
+     });
+
+     // Diagram footer
+     ctx.textAlign = "center";
+     ctx.font = "11px monospace";
+     ctx.fillStyle = "#666672";
+     ctx.fillText(
+         "ARCHITECTURE OVERVIEW • REPRESENTATIVE NEURONS",
+         width / 2,
+         455
+     );
+ }
+
+ // Switch between FULL and COMPACT modes.
+ networkModeButtons.forEach(button =>
+ {
+     button.addEventListener("click", () =>
+     {
+         const mode = button.dataset.networkMode;
+
+         if (!networkSection || !["full", "compact"].includes(mode))
+         {
+             return;
+         }
+
+         networkSection.classList.toggle(
+             "mode-full",
+             mode === "full"
+         );
+
+         networkSection.classList.toggle(
+             "mode-compact",
+             mode === "compact"
+         );
+
+         networkModeButtons.forEach(modeButton =>
+         {
+             const isActive =
+                 modeButton.dataset.networkMode === mode;
+
+             modeButton.classList.toggle("active", isActive);
+             modeButton.setAttribute(
+                 "aria-pressed",
+                 String(isActive)
+             );
+         });
+
+         if (mode === "full")
+         {
+             drawFullNetwork();
+         }
+     });
+ });
+
  // ============================================================
  // SCHEDULE ANIMATION STEP
  // ============================================================
