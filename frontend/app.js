@@ -1096,189 +1096,163 @@ function drawFullNetwork()
  // RENDER REAL NETWORK ACTIVATIONS
  // ============================================================
 
- function drawFullNetworkTrace(result, stage)
- {
-     // First draw the base architecture.
-     drawFullNetwork();
+ 
+function drawFullNetworkTrace(result, stage)
+{
+    drawFullNetwork();
 
-     if (!result || !networkCanvasContext)
-     {
-         return;
-     }
+    if (!result || !networkCanvasContext)
+    {
+        return;
+    }
 
-     const ctx = networkCanvasContext;
+    const ctx = networkCanvasContext;
 
-     const layers = [
-         {
-             x: 110,
-             count: 28,
-             values: result.input,
-             activationStage: 0
-         },
-         {
-             x: 430,
-             count: 18,
-             values: result.hidden1,
-             activationStage: 2
-         },
-         {
-             x: 750,
-             count: 14,
-             values: result.hidden2,
-             activationStage: 4
-         },
-         {
-             x: 1070,
-             count: 10,
-             values: result.output,
-             activationStage: 6
-         }
-     ];
+    const layers = [
+        {
+            name: "INPUT",
+            values: result.input,
+            stage: 0,
+            centerX: 105,
+            topY: 110,
+            columns: 28,
+            cellSize: 4,
+            gap: 1
+        },
+        {
+            name: "HIDDEN 1",
+            values: result.hidden1,
+            stage: 2,
+            centerX: 365,
+            topY: 115,
+            columns: 16,
+            cellSize: 7,
+            gap: 3
+        },
+        {
+            name: "HIDDEN 2",
+            values: result.hidden2,
+            stage: 4,
+            centerX: 685,
+            topY: 145,
+            columns: 8,
+            cellSize: 11,
+            gap: 3
+        }
+    ];
 
-     const top = 100;
-     const bottom = 390;
+    // Render the actual activation value of every neuron.
+    layers.forEach(layer =>
+    {
+        if (
+            stage < layer.stage ||
+            !Array.isArray(layer.values)
+        )
+        {
+            return;
+        }
 
-     // Draw real activation strengths over the representative nodes.
-     layers.forEach((layer, layerIndex) =>
-     {
-         if (
-             stage < layer.activationStage ||
-             !Array.isArray(layer.values)
-         )
-         {
-             return;
-         }
+        const values = layer.values;
+        const maxValue = Math.max(
+            0.000001,
+            ...values.map(value =>
+                Math.abs(Number(value) || 0)
+            )
+        );
 
-         const values = sampleArray(
-             layer.values,
-             layer.count
-         );
+        const totalWidth =
+            layer.columns * (layer.cellSize + layer.gap)
+            - layer.gap;
 
-         const maxValue = Math.max(
-             0.000001,
-             ...values.map(value =>
-                 Math.abs(Number(value) || 0)
-             )
-         );
+        const startX = layer.centerX - totalWidth / 2;
 
-         values.forEach((value, index) =>
-         {
-             const strength = Math.min(
-                 1,
-                 Math.abs(Number(value) || 0) / maxValue
-             );
+        values.forEach((rawValue, index) =>
+        {
+            const value = Number(rawValue) || 0;
+            const strength = Math.min(
+                1,
+                Math.abs(value) / maxValue
+            );
 
-             const y = layer.count === 1
-                 ? (top + bottom) / 2
-                 : top + index * (bottom - top) /
-                     (layer.count - 1);
+            const row = Math.floor(index / layer.columns);
+            const col = index % layer.columns;
 
-             const radius = layerIndex === 3 ? 6 : 4.2;
+            const x = startX +
+                col * (layer.cellSize + layer.gap);
 
-             ctx.beginPath();
-             ctx.arc(layer.x, y, radius + 2, 0, Math.PI * 2);
+            const y = layer.topY +
+                row * (layer.cellSize + layer.gap);
 
-             ctx.fillStyle =
-                 `rgba(255, 45, 60, ${0.12 + strength * 0.65})`;
+            ctx.fillStyle =
+                `rgba(255, ${Math.round(80 + strength * 100)}, ` +
+                `${Math.round(90 + strength * 100)}, ` +
+                `${0.2 + strength * 0.8})`;
 
-             ctx.fill();
+            ctx.fillRect(
+                x,
+                y,
+                layer.cellSize,
+                layer.cellSize
+            );
+        });
+    });
 
-             ctx.beginPath();
-             ctx.arc(layer.x, y, radius, 0, Math.PI * 2);
+    // Output probabilities are returned by the backend.
+    if (
+        stage >= 6 &&
+        Array.isArray(result.output)
+    )
+    {
+        result.output.forEach((rawValue, digit) =>
+        {
+            const probability = Math.max(
+                0,
+                Number(rawValue) || 0
+            );
 
-             ctx.fillStyle =
-                 `rgba(255, ${Math.round(100 - strength * 55)}, ${Math.round(110 - strength * 60)}, ${0.35 + strength * 0.65})`;
+            const y = 90 + digit * 32;
 
-             ctx.fill();
+            ctx.fillStyle = "rgba(255, 38, 56, 0.15)";
+            ctx.fillRect(990, y, 90, 18);
 
-             ctx.strokeStyle =
-                 `rgba(255, 160, 165, ${0.25 + strength * 0.75})`;
+            ctx.fillStyle = "#ff4655";
+            ctx.fillRect(
+                990,
+                y,
+                90 * Math.min(1, probability),
+                18
+            );
 
-             ctx.lineWidth = 1;
-             ctx.stroke();
-         });
-     });
+            ctx.textAlign = "left";
+            ctx.font = "11px monospace";
+            ctx.fillStyle = "#f4dadd";
+            ctx.fillText(
+                `${(probability * 100).toFixed(1)}%`,
+                1090,
+                y + 9
+            );
+        });
+    }
 
-     // Highlight the current connection stage.
-     // These lines show the forward-pass sequence, not actual weights.
-     const connectionStages = [1, 3, 5];
+    const stageLabels = [
+        "INPUT PIXELS",
+        "INPUT → HIDDEN 1",
+        "HIDDEN 1 ACTIVATIONS",
+        "HIDDEN 1 → HIDDEN 2",
+        "HIDDEN 2 ACTIVATIONS",
+        "HIDDEN 2 → OUTPUT",
+        "OUTPUT PROBABILITIES"
+    ];
 
-     connectionStages.forEach((connectionStage, index) =>
-     {
-         if (
-             stage < connectionStage ||
-             stage >= connectionStage + 2
-         )
-         {
-             return;
-         }
-
-         const left = layers[index];
-         const right = layers[index + 1];
-
-         const leftNodes = Array.from(
-             { length: left.count },
-             (_, i) => ({
-                 x: left.x,
-                 y: top + i * (bottom - top) /
-                     (left.count - 1)
-             })
-         );
-
-         const rightNodes = Array.from(
-             { length: right.count },
-             (_, i) => ({
-                 x: right.x,
-                 y: top + i * (bottom - top) /
-                     (right.count - 1)
-             })
-         );
-
-         ctx.save();
-         ctx.strokeStyle = "rgba(255, 55, 70, 0.65)";
-         ctx.lineWidth = 1.2;
-         ctx.shadowColor = "#ff2638";
-         ctx.shadowBlur = 7;
-
-         // Highlight a readable subset instead of every connection.
-         leftNodes.forEach((from, i) =>
-         {
-             const targetIndex = Math.floor(
-                 i * rightNodes.length / leftNodes.length
-             );
-
-             const to = rightNodes[targetIndex];
-
-             ctx.beginPath();
-             ctx.moveTo(from.x, from.y);
-             ctx.lineTo(to.x, to.y);
-             ctx.stroke();
-         });
-
-         ctx.restore();
-     });
-
-     // Show the current forward-pass stage.
-     const stageLabels = [
-         "INPUT ACTIVATIONS",
-         "INPUT → HIDDEN 1",
-         "HIDDEN 1 ACTIVATIONS",
-         "HIDDEN 1 → HIDDEN 2",
-         "HIDDEN 2 ACTIVATIONS",
-         "HIDDEN 2 → OUTPUT",
-         "OUTPUT PROBABILITIES"
-     ];
-
-     ctx.textAlign = "center";
-     ctx.font = "bold 12px monospace";
-     ctx.fillStyle = "#ff6875";
-
-     ctx.fillText(
-         stageLabels[stage] || "NETWORK READY",
-         networkCanvas.width / 2,
-         435
-     );
- }
+    ctx.textAlign = "center";
+    ctx.font = "bold 12px monospace";
+    ctx.fillStyle = "#ff6875";
+    ctx.fillText(
+        stageLabels[stage] || "NETWORK READY",
+        networkCanvas.width / 2,
+        435
+    );
+}
 
  function scheduleNetworkStep(callback, delay)
  {
