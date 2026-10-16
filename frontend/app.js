@@ -1086,11 +1086,61 @@ function drawFullNetwork()
     );
 }
 
+ // ============================================================
+ // NETWORK DISPLAY MODES
+ // ============================================================
+
+networkModeButtons.forEach(button =>
+{
+    button.addEventListener("click", () =>
+    {
+        const mode = button.dataset.networkMode;
+
+        if (
+            !networkSection ||
+            !["full", "compact"].includes(mode)
+        )
+        {
+            return;
+        }
+
+        networkSection.classList.toggle(
+            "mode-full",
+            mode === "full"
+        );
+
+        networkSection.classList.toggle(
+            "mode-compact",
+            mode === "compact"
+        );
+
+        networkModeButtons.forEach(modeButton =>
+        {
+            const isActive =
+                modeButton.dataset.networkMode === mode;
+
+            modeButton.classList.toggle("active", isActive);
+
+            modeButton.setAttribute(
+                "aria-pressed",
+                String(isActive)
+            );
+        });
+
+        if (mode === "full")
+        {
+            drawFullNetworkTrace(
+                latestNetworkResult,
+                fullNetworkStage
+            );
+        }
+    });
+});
+
 
  // ============================================================
  // SCHEDULE ANIMATION STEP
  // ============================================================
-
 
  // ============================================================
  // RENDER REAL NETWORK ACTIVATIONS
