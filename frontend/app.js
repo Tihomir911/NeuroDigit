@@ -955,9 +955,6 @@ startButton.addEventListener(
 
      let fullNetworkStage = -1;
 
- // Draw a representative diagram of the network architecture.
- // The numbers in the labels are the actual layer sizes.
- 
 function drawFullNetwork()
 {
     if (!networkCanvas || !networkCanvasContext)
