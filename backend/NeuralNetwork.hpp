@@ -42,6 +42,12 @@ public:
         const string& filename
     );
 
+    const vector<vector<double>>&
+    weightsHidden1Hidden2ForVisualization() const;
+
+    const vector<vector<double>>&
+    weightsHidden2OutputForVisualization() const;
+
 private:
 
     double relu(double value);
