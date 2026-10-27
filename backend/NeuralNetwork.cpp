@@ -510,22 +510,28 @@ void NeuralNetwork::load(
     }
 
 
-    file.read(
+        file.read(
         reinterpret_cast<char*>(
             biasOutput.data()
         ),
         biasOutput.size() * sizeof(double)
     );
+}
 
-    const vector<vector<double>>&
-    NeuralNetwork::weightsHidden1Hidden2ForVisualization() const
-    {
-        return weightsHidden1Hidden2;
-    }
 
-    const vector<vector<double>>&
-    NeuralNetwork::weightsHidden2OutputForVisualization() const
-    {
-        return weightsHidden2Output;
-    }
+// ============================================================
+// VISUALIZATION ACCESSORS
+// ============================================================
+
+const vector<vector<double>>&
+NeuralNetwork::weightsHidden1Hidden2ForVisualization() const
+{
+    return weightsHidden1Hidden2;
+}
+
+
+const vector<vector<double>>&
+NeuralNetwork::weightsHidden2OutputForVisualization() const
+{
+    return weightsHidden2Output;
 }
