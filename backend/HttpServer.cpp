@@ -9,18 +9,40 @@
 #include <vector>
 
 using namespace std;
+
 using json = nlohmann::json;
 
 
 void startServer(
+
     NeuralNetwork& network
+
 )
 {
     httplib::Server server;
 
-
     cout << "Starting HTTP server..." << endl;
 
+        // Return trained weights for network visualization.
+    server.Get(
+        "/weights",
+        [&](const httplib::Request& request,
+            httplib::Response& response)
+        {
+            json result;
+
+            result["hidden1ToHidden2"] =
+                network.weightsHidden1Hidden2ForVisualization();
+
+            result["hidden2ToOutput"] =
+                network.weightsHidden2OutputForVisualization();
+
+            response.set_content(
+                result.dump(),
+                "application/json"
+            );
+        }
+    );
 
     server.Post(
         "/predict",
