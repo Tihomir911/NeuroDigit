@@ -1,3 +1,4 @@
+
 #include "TerminalUI.hpp"
 
 #include <iostream>
@@ -7,23 +8,21 @@
 
 namespace
 {
-    // ANSI colors.
-    constexpr const char* RESET   = "\033[0m";
-    constexpr const char* PINK    = "\033[38;5;213m";
-    constexpr const char* PURPLE  = "\033[38;5;141m";
-    constexpr const char* CYAN    = "\033[38;5;117m";
-    constexpr const char* GREEN   = "\033[38;5;120m";
-    constexpr const char* RED     = "\033[38;5;203m";
-    constexpr const char* GRAY    = "\033[38;5;245m";
-    constexpr const char* WHITE   = "\033[38;5;255m";
+    constexpr const char* RESET  = "\033[0m";
+    constexpr const char* PINK   = "\033[38;5;213m";
+    constexpr const char* PURPLE = "\033[38;5;141m";
+    constexpr const char* CYAN   = "\033[38;5;117m";
+    constexpr const char* GREEN  = "\033[38;5;120m";
+    constexpr const char* RED    = "\033[38;5;203m";
+    constexpr const char* GRAY   = "\033[38;5;245m";
+    constexpr const char* WHITE  = "\033[38;5;255m";
 
-    // Check whether stdout supports terminal colors.
     bool supportsColor()
     {
-        return isatty(STDOUT_FILENO) && std::getenv("NO_COLOR") == nullptr;
+        return isatty(STDOUT_FILENO)
+            && std::getenv("NO_COLOR") == nullptr;
     }
 
-    // Return ANSI color or an empty string.
     const char* color(const char* ansi)
     {
         return supportsColor() ? ansi : "";
@@ -51,8 +50,7 @@ namespace TerminalUI
             << " |  \\| |  _| | | | |  _|  | | | | |_) || |  | |\n"
             << " | |\\  | |___| |_| | |___ | |_| |  _ < | |  | |\n"
             << " |_| \\_|_____\\___/|_____(_)___/|_| \\_\\___| |_|\n"
-            << color(RESET)
-            << '\n';
+            << color(RESET) << '\n';
 
         std::cout
             << color(PINK)
@@ -64,8 +62,7 @@ namespace TerminalUI
             << "          > ^ < "
             << color(CYAN)
             << "       Handwriting Recognition\n"
-            << color(RESET)
-            << '\n';
+            << color(RESET) << '\n';
 
         printLine();
 
@@ -75,7 +72,6 @@ namespace TerminalUI
             << color(RESET);
 
         printLine();
-
         std::cout << '\n';
     }
 
@@ -83,13 +79,19 @@ namespace TerminalUI
     {
         std::cout
             << "  "
-            << color(GREEN)
-            << "[ OK ] "
+            << color(GREEN) << "[ OK ] "
             << color(RESET)
-            << color(WHITE)
-            << message
-            << color(RESET)
-            << '\n';
+            << color(WHITE) << message
+            << color(RESET) << '\n';
+    }
+
+    void printSection(const std::string& title)
+    {
+        std::cout
+            << '\n'
+            << color(PURPLE)
+            << "  [ " << title << " ]\n"
+            << color(RESET);
     }
 
     void printServerInfo(const std::string& address)
@@ -103,23 +105,19 @@ namespace TerminalUI
 
         std::cout
             << "  | "
-            << color(GRAY)
-            << "STATUS   : "
+            << color(GRAY) << "STATUS   : "
             << color(RESET)
-            << color(GREEN)
-            << "ONLINE"
+            << color(GREEN) << "ONLINE"
             << color(RESET)
             << "                                      |\n";
 
         std::cout
             << "  | "
-            << color(GRAY)
-            << "ADDRESS  : "
+            << color(GRAY) << "ADDRESS  : "
             << color(RESET)
-            << color(CYAN)
-            << address;
+            << color(CYAN) << address
+            << color(RESET);
 
-        // Pad the address line to keep the frame aligned.
         const std::size_t contentLength = 12 + address.length();
         const std::size_t padding =
             contentLength < 46 ? 46 - contentLength : 1;
@@ -128,11 +126,9 @@ namespace TerminalUI
 
         std::cout
             << "  | "
-            << color(GRAY)
-            << "MODEL    : "
+            << color(GRAY) << "MODEL    : "
             << color(RESET)
-            << color(WHITE)
-            << "MNIST"
+            << color(WHITE) << "MNIST"
             << color(RESET)
             << "                                         |\n";
 
@@ -153,11 +149,9 @@ namespace TerminalUI
     {
         std::cerr
             << '\n'
-            << color(RED)
-            << "  [ ERROR ] "
+            << color(RED) << "  [ ERROR ] "
             << color(RESET)
-            << message
-            << '\n';
+            << message << '\n';
     }
 
     void printShutdown()
@@ -167,7 +161,6 @@ namespace TerminalUI
             << color(PINK)
             << "  [ SYSTEM ] NeuroDigit is shutting down...\n"
             << "  [ SYSTEM ] See you next time! <3\n"
-            << color(RESET)
-            << '\n';
+            << color(RESET) << '\n';
     }
 }
