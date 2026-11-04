@@ -40,7 +40,6 @@ namespace TerminalUI
 {
     void printBanner()
     {
-        // Левая колонка — прежний баннер NeuroDigit.
         const std::string left[] =
         {
             "  _   _ _____ _   _ _____   ___  ____  ___ _____",
@@ -53,12 +52,13 @@ namespace TerminalUI
             "          Handwriting Recognition",
             "",
             "  +------------------------------------------------------+",
-            "                  SYSTEM INITIALIZATION",
-            "  +------------------------------------------------------+"
+            "",
+            "  [ MODEL INITIALIZATION ]",
+            "  [ OK ] Neural network loaded",
+            "  [ OK ] Model weights initialized"
         };
 
-        // Правая колонка — ASCII-art, переданный пользователем.
-        // Raw string literals сохраняют Unicode-символы и пробелы.
+     
         const char* cat[] =
         {
             R"(⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⠶⣶⣤⣔⣶⡶⣦⣤⣠⣶⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀)",
