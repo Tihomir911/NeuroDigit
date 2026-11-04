@@ -1,4 +1,5 @@
 #include "HttpServer.hpp"
+#include "TerminalUI.hpp"
 
 #include <filesystem>
 
@@ -21,7 +22,7 @@ void startServer(
 {
     httplib::Server server;
 
-    cout << "Starting HTTP server..." << endl;
+    TerminalUI::printSection("HTTP SERVER");
 
         // Return trained weights for network visualization.
     server.Get(
@@ -158,7 +159,7 @@ void startServer(
     }
     else
     {
-        cerr << "Failed to find frontend directory." << endl;
+        TerminalUI::printError("Failed to find frontend directory.");
         cerr << "Checked:" << endl;
         cerr << "  ./frontend" << endl;
         cerr << "  ./build/frontend" << endl;
@@ -167,24 +168,28 @@ void startServer(
         return;
     }
 
-    cout << "Frontend directory found: "
-         << frontendPath
-         << endl;
+    TerminalUI::printStep(
+        "Frontend directory detected: " + frontendPath
+    );
 
     if (!server.set_mount_point("/", frontendPath))
     {
-        cerr << "Failed to mount frontend directory: "
-             << frontendPath
-             << endl;
+        TerminalUI::printError(
+            "Failed to mount frontend directory: " + frontendPath
+        );
 
         return;
     }
 
-    cout << "Server is running on:" << endl;
-    cout << "http://localhost:8080" << endl;
+    TerminalUI::printStep("Frontend mounted successfully");
 
-    server.listen(
-        "0.0.0.0",
-        8080
+    TerminalUI::printServerInfo(
+        "http://localhost:8080"
     );
+
+    if (!server.listen("0.0.0.0", 8080))
+    {
+        TerminalUI::printError("HTTP server failed to start");
+    }
+
 }
