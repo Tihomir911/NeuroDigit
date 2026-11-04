@@ -2,6 +2,7 @@
 #include "NeuralNetwork.hpp"
 #include "Mnist.hpp"
 #include "HttpServer.hpp"
+#include "TerminalUI.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -451,20 +452,27 @@ int main(
         }
 
 
+        
         if (mode == "server")
         {
+           TerminalUI::printBanner();
+
             NeuralNetwork network;
 
-            cout << "Loading model..." << endl;
+            TerminalUI::printSection("MODEL INITIALIZATION");
+
+            cout << "  [ .. ] Loading neural network..." << endl;
 
             network.load("model.bin");
 
-            cout << "Model loaded!" << endl;
+            TerminalUI::printStep("Neural network loaded");
+            TerminalUI::printStep("Model weights initialized");
 
             startServer(network);
 
             return 0;
         }
+
 
 
         cout << "Unknown mode: "
@@ -481,11 +489,7 @@ int main(
     }
     catch (const exception& error)
     {
-        cerr << endl;
-        cerr << "ERROR: "
-             << error.what()
-             << endl;
-
+        TerminalUI::printError(error.what());
         return 1;
     }
 }
