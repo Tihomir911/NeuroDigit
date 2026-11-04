@@ -955,6 +955,53 @@ startButton.addEventListener(
 
      let fullNetworkStage = -1;
 
+// ============================================================
+// LOAD TRAINED NETWORK WEIGHTS
+// ============================================================
+
+let networkWeights = null;
+
+async function loadNetworkWeights(){
+    try {
+        const response = await fetch("/weights");
+        
+        if (!response.ok){
+            throw new Error(
+                'HTTP error: ${response.status}'
+            );
+        }
+
+        const weights = await response.jsom();
+
+        if(
+            !Array.isArray(weights.hidden1ToHidden2) ||
+            !Array.isArray(weights.hidden2ToOutput)
+        )
+        {
+            throw new Error("Invalid weights format");
+        }
+
+        networkWeights = weights;
+
+        console.log(
+            "Neural network weights loaded: ",
+            {
+            hidden1ToHidden2:
+                `${weights.hidden1ToHidden2.length} x ${weights.hidden1ToHidden2[0].length}`,
+
+            hidden2ToOutput:
+                `${weights.hidden2ToOutput.length} x ${weights.hidden2ToOutput[0].length}`
+            }
+        );
+    }
+    catch (error){
+        console.error(
+            "Failed to load network weights: ",
+            error
+        );
+    }
+}
+
 function drawFullNetwork()
 {
     if (!networkCanvas || !networkCanvasContext)
@@ -1763,3 +1810,9 @@ initializeDrawingCanvas();
 requestAnimationFrame(
     drawSpace
 );
+
+// ============================================================
+// INITIALIZE NETWORK VISUALIZATION
+// ============================================================
+
+loadNetworkWeights();
