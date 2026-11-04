@@ -451,29 +451,19 @@ int main(
             return 0;
         }
 
-
-        
         if (mode == "server")
         {
-           TerminalUI::printBanner();
-
             NeuralNetwork network;
-
-            TerminalUI::printSection("MODEL INITIALIZATION");
-
-            cout << "  [ .. ] Loading neural network..." << endl;
 
             network.load("model.bin");
 
-            TerminalUI::printStep("Neural network loaded");
-            TerminalUI::printStep("Model weights initialized");
+            TerminalUI::printBanner();
 
             startServer(network);
 
             return 0;
+    
         }
-
-
 
         cout << "Unknown mode: "
              << mode
