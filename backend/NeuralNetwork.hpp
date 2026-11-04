@@ -29,6 +29,13 @@ public:
         const vector<double>& input
     );
 
+    // Train the network using one sample (SGD).
+    void train(
+        const vector<double>& input,
+        int label,
+        double learningRate
+    );
+
     // Accumulate gradients for one training sample.
     void accumulateGradients(
         const vector<double>& input,
