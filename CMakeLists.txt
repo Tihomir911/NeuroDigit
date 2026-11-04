@@ -16,6 +16,7 @@ add_executable(NeuroDigit
     backend/NeuralNetwork.cpp
     backend/Mnist.cpp
     backend/HttpServer.cpp
+    backend/TerminalUI.cpp
 )
 
 
