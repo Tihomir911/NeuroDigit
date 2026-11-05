@@ -457,12 +457,9 @@ int main(
 
             network.load("model.bin");
 
-            TerminalUI::printBanner();
-
             startServer(network);
 
             return 0;
-    
         }
 
         cout << "Unknown mode: "
