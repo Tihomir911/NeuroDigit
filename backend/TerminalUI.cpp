@@ -140,7 +140,6 @@ namespace TerminalUI
             {
                 const std::string& line = left[i];
 
-                // Section headings
                 if (line.find("[ MODEL") != std::string::npos ||
                     line.find("[ HTTP") != std::string::npos)
                 {
@@ -149,7 +148,6 @@ namespace TerminalUI
                         << line
                         << color(RESET);
                 }
-                // OK status
                 else if (line.find("[ OK ]") != std::string::npos)
                 {
                     const std::size_t position =
@@ -163,7 +161,6 @@ namespace TerminalUI
                         << line.substr(position + 6)
                         << color(RESET);
                 }
-                // Borders
                 else if (line.find("+---") != std::string::npos)
                 {
                     std::cout
@@ -171,7 +168,6 @@ namespace TerminalUI
                         << line
                         << color(RESET);
                 }
-                // Default text
                 else
                 {
                     std::cout
@@ -180,7 +176,6 @@ namespace TerminalUI
                         << color(RESET);
                 }
 
-                // Align the right column.
                 if (line.length() < LEFT_WIDTH)
                 {
                     std::cout
@@ -195,7 +190,6 @@ namespace TerminalUI
                 std::cout << std::string(LEFT_WIDTH, ' ');
             }
 
-            // Astolfo
             if (i < catLines)
             {
                 std::cout
