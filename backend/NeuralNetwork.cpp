@@ -516,6 +516,13 @@ void NeuralNetwork::load(
         ),
         biasOutput.size() * sizeof(double)
     );
+
+    if (!file){
+        
+        throw runtime_error(
+            "Model file is corrupted or incomplete: " + filename
+        );
+    }
 }
 
 
