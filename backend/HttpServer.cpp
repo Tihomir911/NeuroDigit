@@ -160,6 +160,7 @@ void startServer(
     else
     {
         TerminalUI::printError("Failed to find frontend directory.");
+
         cerr << "Checked:" << endl;
         cerr << "  ./frontend" << endl;
         cerr << "  ./build/frontend" << endl;
@@ -168,11 +169,7 @@ void startServer(
         return;
     }
 
-    TerminalUI::printStep(
-        "Frontend directory detected: " + frontendPath
-    );
-
-        if (!server.set_mount_point("/", frontendPath))
+    if (!server.set_mount_point("/", frontendPath))
     {
         TerminalUI::printError(
             "Failed to mount frontend directory: " + frontendPath
@@ -190,5 +187,4 @@ void startServer(
     {
         TerminalUI::printError("HTTP server failed to start");
     }
-
 }
