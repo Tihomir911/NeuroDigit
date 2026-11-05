@@ -67,7 +67,7 @@ namespace TerminalUI
             "",
             "  [ HTTP SERVER ]",
             "  [ OK ] Frontend directory detected",
-            "  [ OK ] Frontend mounted successfully",
+            "  [ OK ] Frontend mounted successfully" + frontendPath,
             "",
             "  +---------------- SERVER -----------------------------+",
             "  | STATUS   : ONLINE",

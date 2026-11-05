@@ -399,8 +399,8 @@ void trainModel()
     cout << endl;
 
 
-    for (int i = 0; i < 60000; i++)
-    {
+    for (size_t i = 0; i < trainDataset.images.size(); i++){
+
         network.train(
             trainDataset.images[i],
             trainDataset.labels[i],
@@ -410,9 +410,10 @@ void trainModel()
         if (i % 1000 == 0)
         {
             cout << "Training: "
-                 << i
-                 << " / 60000"
-                 << endl;
+             << i
+             << " / "
+             << trainDataset.images.size()
+             << endl;
         }
     }
 
