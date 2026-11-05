@@ -172,7 +172,7 @@ void startServer(
         "Frontend directory detected: " + frontendPath
     );
 
-    if (!server.set_mount_point("/", frontendPath))
+        if (!server.set_mount_point("/", frontendPath))
     {
         TerminalUI::printError(
             "Failed to mount frontend directory: " + frontendPath
@@ -181,9 +181,8 @@ void startServer(
         return;
     }
 
-    TerminalUI::printStep("Frontend mounted successfully");
-
-    TerminalUI::printServerInfo(
+    TerminalUI::printStartupScreen(
+        frontendPath,
         "http://localhost:8080"
     );
 
