@@ -360,6 +360,19 @@ void trainModel()
         "data/mnist/t10k-labels-idx1-ubyte"
     );
 
+    if (trainDataset.images.size() != trainDataset.labels.size()){
+
+        throw runtime_error(
+            "Training images and labels count missmatch"
+        );
+    }
+    if (trainDataset.images.empty()){
+
+        throw runtime_error(
+            "Training dataset is empty"
+        );
+    }
+
     cout << "Training images: "
          << trainDataset.images.size()
          << endl;
