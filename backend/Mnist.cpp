@@ -71,7 +71,7 @@ void Mnist::loadImages(
             );
 
             images[i][j] =
-                static_cast<double>(pixel) / 256.0;
+                static_cast<double>(pixel) / 255.0;
             
         }
     }
