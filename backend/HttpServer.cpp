@@ -22,9 +22,6 @@ void startServer(
 {
     httplib::Server server;
 
-    TerminalUI::printSection("HTTP SERVER");
-
-        // Return trained weights for network visualization.
     server.Get(
         "/weights",
         [&](const httplib::Request& request,
