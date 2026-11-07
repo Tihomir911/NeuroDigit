@@ -1433,3 +1433,107 @@ body {
         height: 350px;
     }
 }
+
+/* ============================================================
+   OUTPUT NEURON INSPECTOR
+   ============================================================ */
+
+.output-inspector {
+    margin-top: 16px;
+    padding: 20px;
+
+    border: 1px solid rgba(255, 38, 56, 0.2);
+    border-radius: 10px;
+
+    background: rgba(5, 5, 12, 0.85);
+}
+
+.output-inspector-header strong {
+    color: #ff4655;
+    font-family: monospace;
+    letter-spacing: 2px;
+}
+
+.output-inspector-header p {
+    color: #92929e;
+    font-size: 12px;
+}
+
+.output-inspector-content {
+    margin-top: 18px;
+}
+
+.output-inspector-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.output-inspector-stat {
+    flex: 1;
+    min-width: 130px;
+    padding: 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 7px;
+
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.output-inspector-stat span {
+    display: block;
+    color: #777780;
+    font-size: 10px;
+    margin-bottom: 7px;
+}
+
+.output-inspector-stat strong {
+    color: #ffffff;
+    font-family: monospace;
+    font-size: 18px;
+}
+
+.output-contribution-group {
+    margin-top: 20px;
+}
+
+.output-contribution-group h4 {
+    color: #92929e;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.output-contribution-row {
+    display: grid;
+    grid-template-columns: 90px 1fr 1fr 100px;
+    gap: 10px;
+
+    padding: 9px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+    color: #92929e;
+    font-family: monospace;
+    font-size: 11px;
+}
+
+.output-contribution-positive {
+    color: #2dcdff;
+}
+
+.output-contribution-negative {
+    color: #ff4155;
+}
+
+.network-section.mode-compact .output-inspector {
+    display: none;
+}
+
+@media (max-width: 650px) {
+    .output-contribution-row {
+        grid-template-columns: 65px 1fr 1fr 80px;
+        gap: 5px;
+        font-size: 9px;
+    }
+}
