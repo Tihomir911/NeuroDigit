@@ -1094,6 +1094,8 @@ async function loadNetworkWeights()
         const weights = await response.json();
 
         if (
+
+            !Array.isArray(weights.inputToHidden1) ||
             !Array.isArray(weights.hidden1ToHidden2) ||
             !Array.isArray(weights.hidden2ToOutput)
         )
@@ -1108,6 +1110,9 @@ async function loadNetworkWeights()
         console.log(
             "Neural network weights loaded:",
             {
+                inputToHidden1:
+                    `${weights.inputToHidden1.length} x ${weights.inputToHidden1[0].length}`,
+
                 hidden1ToHidden2:
                     `${weights.hidden1ToHidden2.length} x ${weights.hidden1ToHidden2[0].length}`,
 
@@ -1199,7 +1204,6 @@ function drawFullNetwork()
         );
     }
 
-    // Each hidden layer is displayed as one vertical neuron column.
     [layout.hidden1, layout.hidden2].forEach(layer =>
     {
         for (let i = 0; i < layer.count; i++)
