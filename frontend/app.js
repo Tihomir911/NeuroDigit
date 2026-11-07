@@ -1089,7 +1089,7 @@ async function loadNetworkWeights(){
             );
         }
 
-        const weights = await response.jsom();
+        const weights = await response.json();
 
         if(
             !Array.isArray(weights.hidden1ToHidden2) ||
