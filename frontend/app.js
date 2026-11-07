@@ -955,6 +955,17 @@ startButton.addEventListener(
 
      let fullNetworkStage = -1;
 
+     let selectedOutputDigit = null;
+
+     const outputInspector =
+        document.getElementById("outputInspector");
+
+     const outputInspectorHint =
+        document.getElementById("outputInspectorHint");
+
+     const outputInspectorContent =
+        document.getElementById("outputInspectorContent");
+
 // ============================================================
 // FULL NETWORK GEOMETRY AND TRAINED WEIGHT CONNECTIONS
 // ============================================================
@@ -1209,6 +1220,273 @@ function drawHiddenToOutputConnections(matrix, ctx)
 }
 
 // ============================================================
+// SELECTED OUTPUT NEURON CONNECTIONS
+// ============================================================
+
+function drawSelectedOutputConnections(
+    result,
+    digit,
+    ctx
+)
+{
+    if (
+        !networkWeights ||
+        !Array.isArray(result.hidden2) ||
+        !Array.isArray(networkWeights.hidden2ToOutput)
+    )
+    {
+        return;
+    }
+
+    const row =
+        networkWeights.hidden2ToOutput[digit];
+
+    if (
+        !Array.isArray(row) ||
+        row.length !== 64
+    )
+    {
+        return;
+    }
+
+    const sourceLayer =
+        fullNetworkLayout.hidden2;
+
+    const output =
+        fullNetworkLayout.output;
+
+    const endY =
+        output.topY +
+        digit * output.step +
+        output.height / 2;
+
+    let maxContribution = 0;
+
+    const contributions = [];
+
+    for (let source = 0; source < 64; source++)
+    {
+        const activation =
+            Number(result.hidden2[source]) || 0;
+
+        const weight =
+            Number(row[source]) || 0;
+
+        const contribution =
+            activation * weight;
+
+        contributions.push(contribution);
+
+        maxContribution = Math.max(
+            maxContribution,
+            Math.abs(contribution)
+        );
+    }
+
+    if (maxContribution === 0)
+    {
+        return;
+    }
+
+    ctx.save();
+
+    for (let source = 0; source < 64; source++)
+    {
+        const contribution =
+            contributions[source];
+
+        if (contribution === 0)
+        {
+            continue;
+        }
+
+        const strength =
+            Math.abs(contribution) / maxContribution;
+
+        const start =
+            getVerticalNeuronPosition(
+                source,
+                sourceLayer
+            );
+
+        ctx.strokeStyle =
+            contribution > 0
+                ? `rgba(45, 205, 255, ${0.35 + strength * 0.6})`
+                : `rgba(255, 65, 85, ${0.35 + strength * 0.6})`;
+
+        ctx.lineWidth =
+            0.8 + strength * 2;
+
+        ctx.beginPath();
+
+        ctx.moveTo(start.x, start.y);
+
+        ctx.lineTo(output.x, endY);
+
+        ctx.stroke();
+    }
+
+    ctx.restore();
+}
+
+// ============================================================
+// UPDATE OUTPUT INSPECTOR
+// ============================================================
+
+function updateOutputInspector(result, digit)
+{
+    if (
+        !result ||
+        !networkWeights ||
+        !outputInspectorContent
+    )
+    {
+        return;
+    }
+
+    const weights =
+        networkWeights.hidden2ToOutput[digit];
+
+    if (
+        !Array.isArray(weights) ||
+        !Array.isArray(result.hidden2)
+    )
+    {
+        return;
+    }
+
+    const contributions = [];
+
+    for (let source = 0; source < 64; source++)
+    {
+        const activation =
+            Number(result.hidden2[source]) || 0;
+
+        const weight =
+            Number(weights[source]) || 0;
+
+        contributions.push({
+            neuron: source,
+            activation,
+            weight,
+            contribution: activation * weight
+        });
+    }
+
+    const positive =
+        contributions
+            .filter(item => item.contribution > 0)
+            .sort((a, b) => b.contribution - a.contribution)
+            .slice(0, 5);
+
+    const negative =
+        contributions
+            .filter(item => item.contribution < 0)
+            .sort((a, b) => a.contribution - b.contribution)
+            .slice(0, 5);
+
+    const positiveSum =
+        contributions
+            .filter(item => item.contribution > 0)
+            .reduce((sum, item) => sum + item.contribution, 0);
+
+    const negativeSum =
+        contributions
+            .filter(item => item.contribution < 0)
+            .reduce((sum, item) => sum + item.contribution, 0);
+
+    const logit =
+        Number(result.logits?.[digit]) || 0;
+
+    const probability =
+        Number(result.output?.[digit]) || 0;
+
+    function renderRows(items, type)
+    {
+        if (items.length === 0)
+        {
+            return "<p>No contributions.</p>";
+        }
+
+        return items.map(item => `
+            <div class="output-contribution-row">
+
+                <span>
+                    H2 #${item.neuron}
+                </span>
+
+                <span>
+                    A: ${item.activation.toFixed(4)}
+                </span>
+
+                <span>
+                    W: ${item.weight.toFixed(5)}
+                </span>
+
+                <strong class="output-contribution-${type}">
+                    ${item.contribution > 0 ? "+" : ""}
+                    ${item.contribution.toFixed(6)}
+                </strong>
+
+            </div>
+        `).join("");
+    }
+
+    outputInspectorHint.textContent =
+        `Inspecting Output ${digit} — incoming connections from 64 neurons.`;
+
+    outputInspectorContent.innerHTML = `
+
+        <div class="output-inspector-summary">
+
+            <div class="output-inspector-stat">
+                <span>DIGIT</span>
+                <strong>${digit}</strong>
+            </div>
+
+            <div class="output-inspector-stat">
+                <span>PROBABILITY</span>
+                <strong>${(probability * 100).toFixed(2)}%</strong>
+            </div>
+
+            <div class="output-inspector-stat">
+                <span>LOGIT</span>
+                <strong>${logit.toFixed(6)}</strong>
+            </div>
+
+        </div>
+
+        <div class="output-contribution-group">
+
+            <h4>
+                POSITIVE CONTRIBUTIONS
+            </h4>
+
+            ${renderRows(positive, "positive")}
+
+            <p class="output-contribution-positive">
+                Total positive: +${positiveSum.toFixed(6)}
+            </p>
+
+        </div>
+
+        <div class="output-contribution-group">
+
+            <h4>
+                NEGATIVE CONTRIBUTIONS
+            </h4>
+
+            ${renderRows(negative, "negative")}
+
+            <p class="output-contribution-negative">
+                Total negative: ${negativeSum.toFixed(6)}
+            </p>
+
+        </div>
+    `;
+}
+
+// ============================================================
 // LOAD TRAINED NETWORK WEIGHTS
 // ============================================================
 
@@ -1431,6 +1709,68 @@ networkModeButtons.forEach(button =>
     });
 });
 
+// ============================================================
+// OUTPUT NEURON SELECTION
+// ============================================================
+
+networkCanvas.addEventListener(
+    "click",
+    (event) =>
+    {
+        if (
+            !latestNetworkResult ||
+            !networkSection.classList.contains("mode-full")
+        )
+        {
+            return;
+        }
+
+        const rect =
+            networkCanvas.getBoundingClientRect();
+
+        const x =
+            (event.clientX - rect.left)
+            * networkCanvas.width / rect.width;
+
+        const y =
+            (event.clientY - rect.top)
+            * networkCanvas.height / rect.height;
+
+        const output =
+            fullNetworkLayout.output;
+
+        for (let digit = 0; digit < 10; digit++)
+        {
+            const top =
+                output.topY + digit * output.step;
+
+            const bottom =
+                top + output.height;
+
+            if (
+                x >= output.x - 8 &&
+                x <= output.x + output.width + 8 &&
+                y >= top - 5 &&
+                y <= bottom + 5
+            )
+            {
+                selectedOutputDigit = digit;
+
+                updateOutputInspector(
+                    latestNetworkResult,
+                    digit
+                );
+
+                drawFullNetworkTrace(
+                    latestNetworkResult,
+                    fullNetworkStage
+                );
+
+                return;
+            }
+        }
+    }
+);
 
  // ============================================================
  // SCHEDULE ANIMATION STEP
@@ -1484,6 +1824,19 @@ function drawFullNetworkTrace(result, stage)
     {
         drawHiddenToOutputConnections(
             networkWeights.hidden2ToOutput,
+            ctx
+        );
+    }
+
+    // Highlight selected output neuron connections.
+    if (
+        selectedOutputDigit !== null &&
+        stage >= 5
+    )
+    {
+        drawSelectedOutputConnections(
+            result,
+            selectedOutputDigit,
             ctx
         );
     }
