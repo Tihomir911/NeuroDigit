@@ -62,6 +62,9 @@ public:
 
     // Visualization accessors.
     const vector<vector<double>>&
+    weightsInputHidden1ForVisualization() const;
+
+    const vector<vector<double>>&
     weightsHidden1Hidden2ForVisualization() const;
 
     const vector<vector<double>>&
