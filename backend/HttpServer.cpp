@@ -29,9 +29,15 @@ void startServer(
         {
             json result;
 
+            // INPUT -> HIDDEN 1
+            result["inputToHidden1"] =
+                network.weightsInputHidden1ForVisualization();
+
+            // HIDDEN 1 -> HIDDEN 2
             result["hidden1ToHidden2"] =
                 network.weightsHidden1Hidden2ForVisualization();
 
+            // HIDDEN 2 -> OUTPUT
             result["hidden2ToOutput"] =
                 network.weightsHidden2OutputForVisualization();
 
