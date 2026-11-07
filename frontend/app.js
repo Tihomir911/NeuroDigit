@@ -1454,6 +1454,21 @@ function drawFullNetworkTrace(result, stage)
     const layout = fullNetworkLayout;
 
     // Draw connections first, so neuron activations remain visible above them.
+
+    // INPUT -> HIDDEN 1
+    if (
+        networkWeights &&
+        stage >= 1
+    )
+    {
+        drawInputToHidden1Connections(
+            networkWeights.inputToHidden1,
+            result.input,
+            layout.hidden1,
+            ctx
+        );
+    }
+
     if (networkWeights && stage >= 3)
     {
         drawWeightConnections(
