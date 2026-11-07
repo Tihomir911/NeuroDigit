@@ -1023,6 +1023,142 @@ function drawWeightConnections(matrix, sourceLayer, destinationLayer, ctx, opaci
     ctx.restore();
 }
 
+// ============================================================
+// INPUT -> HIDDEN 1 CONNECTIONS
+// ============================================================
+
+function drawInputToHidden1Connections(
+    matrix,
+    inputValues,
+    destinationLayer,
+    ctx
+)
+{
+    if (
+        !Array.isArray(matrix) ||
+        matrix.length !== 128 ||
+        !Array.isArray(inputValues) ||
+        inputValues.length !== 784
+    )
+    {
+        return;
+    }
+
+    const pixel = fullNetworkLayout.input;
+
+    const inputSize =
+        28 * (pixel.pixelSize + pixel.gap)
+        - pixel.gap;
+
+    const inputX =
+        pixel.centerX - inputSize / 2;
+
+    // Find the strongest actual contribution.
+    let maxContribution = 0;
+
+    for (let destination = 0; destination < 128; destination++)
+    {
+        const row = matrix[destination];
+
+        if (!Array.isArray(row) || row.length !== 784)
+        {
+            return;
+        }
+
+        for (let source = 0; source < 784; source++)
+        {
+            const contribution =
+                Math.abs(
+                    inputValues[source] * row[source]
+                );
+
+            maxContribution = Math.max(
+                maxContribution,
+                contribution
+            );
+        }
+    }
+
+    if (maxContribution === 0)
+    {
+        return;
+    }
+
+    ctx.save();
+
+    for (let destination = 0; destination < 128; destination++)
+    {
+        const row = matrix[destination];
+
+        const end = getVerticalNeuronPosition(
+            destination,
+            destinationLayer
+        );
+
+        for (let source = 0; source < 784; source++)
+        {
+            const inputValue =
+                Number(inputValues[source]) || 0;
+
+            // Pixels without activation do not contribute.
+            if (inputValue === 0)
+            {
+                continue;
+            }
+
+            const weight =
+                Number(row[source]) || 0;
+
+            const contribution =
+                inputValue * weight;
+
+            const strength =
+                Math.abs(contribution) / maxContribution;
+
+            const rowIndex =
+                Math.floor(source / 28);
+
+            const colIndex =
+                source % 28;
+
+            const startX =
+                inputX +
+                colIndex * (pixel.pixelSize + pixel.gap) +
+                pixel.pixelSize / 2;
+
+            const startY =
+                pixel.topY +
+                rowIndex * (pixel.pixelSize + pixel.gap) +
+                pixel.pixelSize / 2;
+
+            // Positive and negative contributions.
+            ctx.strokeStyle =
+                contribution >= 0
+                    ? `rgba(45, 205, 255, ${0.008 + strength * 0.12})`
+                    : `rgba(255, 65, 85, ${0.008 + strength * 0.12})`;
+
+            ctx.lineWidth =
+                0.15 + strength * 0.55;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                startX,
+                startY
+            );
+
+            ctx.lineTo(
+                end.x,
+                end.y
+            );
+
+            ctx.stroke();
+        }
+    }
+
+    ctx.restore();
+}
+
 function drawHiddenToOutputConnections(matrix, ctx)
 {
     if (!Array.isArray(matrix) || matrix.length !== 10)
