@@ -1,0 +1,17 @@
+.git/
+.gitignore
+
+build/
+cmake-build-*/
+
+data/
+
+model.bin
+
+*.log
+
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db
