@@ -24,4 +24,4 @@ EXPOSE 8080
 
 RUN ln -s /app/build/NeuroDigit /usr/local/bin/neurodigit
 
-CMD ["./build/NeuroDigit", "server"]
+CMD ["neurodigit", "server"]
