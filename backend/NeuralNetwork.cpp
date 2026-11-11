@@ -558,7 +558,11 @@ void NeuralNetwork::load(
 // VISUALIZATION ACCESSORS
 // ============================================================
 
-
+const vector<vector<double>>&
+NeuralNetwork::weightsInputHidden1ForVisualization() const
+{
+    return weightsInputHidden1;
+}
 
 const vector<vector<double>>&
 NeuralNetwork::weightsHidden1Hidden2ForVisualization() const
