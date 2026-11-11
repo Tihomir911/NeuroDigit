@@ -11,6 +11,7 @@ using namespace std;
 
 NeuralNetwork::NeuralNetwork()
 {
+    // Network architecture:
     // 784 -> 128 -> 64 -> 10
 
     weightsInputHidden1.resize(
@@ -35,38 +36,65 @@ NeuralNetwork::NeuralNetwork()
     biasOutput.resize(10);
 
 
-    random_device rd;
-    mt19937 generator(rd());
+    // Fixed seed for reproducible experiments.
+    mt19937 generator(42);
 
-    normal_distribution<double> distribution(
+
+    // He initialization for ReLU layers.
+
+    const double heStd1 = sqrt(2.0 / 784.0);
+    const double heStd2 = sqrt(2.0 / 128.0);
+
+    normal_distribution<double> heDistribution1(
         0.0,
-        0.01
+        heStd1
     );
 
+    normal_distribution<double> heDistribution2(
+        0.0,
+        heStd2
+    );
+
+
+    // Xavier initialization for output layer.
+
+    const double xavierStd = sqrt(2.0 / (64.0 + 10.0));
+
+    normal_distribution<double> xavierDistribution(
+        0.0,
+        xavierStd
+    );
+
+
+    // Input -> Hidden 1
 
     for (auto& neuron : weightsInputHidden1)
     {
         for (double& weight : neuron)
         {
-            weight = distribution(generator);
+            weight = heDistribution1(generator);
         }
     }
 
+
+    // Hidden 1 -> Hidden 2
 
     for (auto& neuron : weightsHidden1Hidden2)
     {
         for (double& weight : neuron)
         {
-            weight = distribution(generator);
+            weight = heDistribution2(generator);
         }
     }
 
+
+    // Hidden 2 -> Output
 
     for (auto& neuron : weightsHidden2Output)
     {
         for (double& weight : neuron)
         {
-            weight = distribution(generator);
+            weight = xavierDistribution(generator);
         }
     }
 }
@@ -530,11 +558,7 @@ void NeuralNetwork::load(
 // VISUALIZATION ACCESSORS
 // ============================================================
 
-const vector<vector<double>>&
-NeuralNetwork::weightsInputHidden1ForVisualization() const
-{
-    return weightsInputHidden1;
-}
+
 
 const vector<vector<double>>&
 NeuralNetwork::weightsHidden1Hidden2ForVisualization() const
