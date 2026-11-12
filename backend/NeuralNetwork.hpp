@@ -95,7 +95,7 @@ private:
 
     vector<vector<double>> gradHidden2Output;
     vector<double> gradBiasOutput;
-\
+    
     vector<vector<double>> mInputHidden1;
     vector<double> mBiasHidden1;
 
