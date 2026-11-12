@@ -5,7 +5,6 @@
 #include <string>
 
 using namespace std;
-
 struct PredictionTrace
 {
     vector<double> input;
@@ -14,7 +13,6 @@ struct PredictionTrace
     vector<double> logits;
     vector<double> probabilities;
 };
-
 class NeuralNetwork
 {
 public:
@@ -29,29 +27,24 @@ public:
         const vector<double>& input
     );
 
-    // Train the network using one sample (SGD).
     void train(
         const vector<double>& input,
         int label,
         double learningRate
     );
 
-    // Accumulate gradients for one training sample.
     void accumulateGradients(
         const vector<double>& input,
         int label
     );
 
-    // Apply accumulated gradients using Adam.
     void updateAdam(
         double learningRate,
         int batchSize
     );
 
-    // Reset accumulated gradients.
     void resetGradients();
 
-    // Save and load model parameters.
     void save(
         const string& filename
     ) const;
@@ -60,7 +53,6 @@ public:
         const string& filename
     );
 
-    // Visualization accessors.
     const vector<vector<double>>&
     weightsInputHidden1ForVisualization() const;
 
@@ -86,7 +78,6 @@ private:
         vector<double>& hidden2
     );
 
-    // Neural network parameters.
     vector<vector<double>> weightsInputHidden1;
     vector<double> biasHidden1;
 
@@ -96,7 +87,6 @@ private:
     vector<vector<double>> weightsHidden2Output;
     vector<double> biasOutput;
 
-    // Accumulated gradients.
     vector<vector<double>> gradInputHidden1;
     vector<double> gradBiasHidden1;
 
@@ -105,8 +95,7 @@ private:
 
     vector<vector<double>> gradHidden2Output;
     vector<double> gradBiasOutput;
-
-    // Adam first moments.
+\
     vector<vector<double>> mInputHidden1;
     vector<double> mBiasHidden1;
 
@@ -116,7 +105,6 @@ private:
     vector<vector<double>> mHidden2Output;
     vector<double> mBiasOutput;
 
-    // Adam second moments.
     vector<vector<double>> vInputHidden1;
     vector<double> vBiasHidden1;
 
@@ -126,11 +114,9 @@ private:
     vector<vector<double>> vHidden2Output;
     vector<double> vBiasOutput;
 
-    // Optimizer state.
     unsigned long long adamStep = 0;
     int accumulatedSamples = 0;
 
-    // Adam hyperparameters.
     const double beta1 = 0.9;
     const double beta2 = 0.999;
     const double epsilon = 1e-8;
