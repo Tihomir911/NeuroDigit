@@ -8,7 +8,6 @@
 
 using namespace std;
 
-
 NeuralNetwork::NeuralNetwork()
 {
     // Network architecture:
@@ -35,12 +34,7 @@ NeuralNetwork::NeuralNetwork()
 
     biasOutput.resize(10);
 
-
-    // Fixed seed for reproducible experiments.
     mt19937 generator(42);
-
-
-    // He initialization for ReLU layers.
 
     const double heStd1 = sqrt(2.0 / 784.0);
     const double heStd2 = sqrt(2.0 / 128.0);
@@ -55,18 +49,12 @@ NeuralNetwork::NeuralNetwork()
         heStd2
     );
 
-
-    // Xavier initialization for output layer.
-
     const double xavierStd = sqrt(2.0 / (64.0 + 10.0));
 
     normal_distribution<double> xavierDistribution(
         0.0,
         xavierStd
     );
-
-
-    // Input -> Hidden 1
 
     for (auto& neuron : weightsInputHidden1)
     {
@@ -76,9 +64,6 @@ NeuralNetwork::NeuralNetwork()
         }
     }
 
-
-    // Hidden 1 -> Hidden 2
-
     for (auto& neuron : weightsHidden1Hidden2)
     {
         for (double& weight : neuron)
@@ -86,9 +71,6 @@ NeuralNetwork::NeuralNetwork()
             weight = heDistribution2(generator);
         }
     }
-
-
-    // Hidden 2 -> Output
 
     for (auto& neuron : weightsHidden2Output)
     {
