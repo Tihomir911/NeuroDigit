@@ -56,6 +56,7 @@ namespace TerminalUI
             "",
             "          NEURODIGIT // SYSTEM",
             "          Handwriting Recognition",
+            "          ADDRESS  : " + address,                       
             "",
             "  +------------------------------------------------------+",
             "",
