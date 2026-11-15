@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libcpp-httplib-dev \
     nlohmann-json3-dev \
     ca-certificates \
-    && rm /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
