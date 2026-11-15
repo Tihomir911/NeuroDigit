@@ -181,3 +181,7 @@ NeuroDigit is an educational machine learning project focused on understanding h
 The project explores neural network mathematics, weights, biases, activation functions, forward propagation, loss calculation, and model training.
 
 It also demonstrates how to combine a C++ machine learning backend with a browser-based frontend and Docker deployment.
+
+
+
+dockerHub prog Url: https://hub.docker.com/r/tihomir288/neurodigit
