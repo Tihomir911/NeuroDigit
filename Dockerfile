@@ -16,6 +16,7 @@ WORKDIR /app
 COPY CMakeLists.txt ./
 COPY backend/ ./backend/
 COPY frontend/ ./frontend/
+COPY model.bin ./model.bin
 
 RUN cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
     && cmake --build build --config Release
