@@ -7,7 +7,4 @@ services:
     ports:
       - "8080:8080"
 
-    volumes:
-      - ./model.bin:/app/model.bin:ro
-
     restart: unless-stopped

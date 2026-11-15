@@ -6,8 +6,6 @@ cmake-build-*/
 
 data/
 
-model.bin
-
 *.log
 
 .vscode/
